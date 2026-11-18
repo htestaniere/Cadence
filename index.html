@@ -680,6 +680,11 @@ body.locked #updBtn{opacity:.4;cursor:not-allowed}
 <div class="ctx" id="ctxMenu" hidden role="menu"></div>
 <div id="tspot" hidden></div>
 <div id="tcoach" class="tuto" hidden role="dialog" aria-live="polite" aria-labelledby="tcT"><div class="tn" id="tcN"></div><h3 id="tcT"></h3><div class="tb" id="tcB"></div><div class="tbtn"><button type="button" class="ghost" id="tcSkip">Passer</button><button type="button" id="tcNext">Suivant</button></div></div>
+<div class="dlgbg" id="langBg" style="z-index:130" hidden><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="langT" style="text-align:center;align-items:stretch">
+  <h3 id="langT" style="margin:0">Langue · Language</h3>
+  <button type="button" id="langFr" style="font-size:1.1em;padding:12px">Français</button>
+  <button type="button" id="langEn" class="ghost" style="font-size:1.1em;padding:12px">English</button>
+</div></div>
 <div class="dlgbg" id="tutoBg" style="z-index:118" hidden><div class="dlg tuto" role="dialog" aria-modal="true" aria-labelledby="tutoT">
   <div class="tn" id="tutoN"></div>
   <h3 id="tutoT"></h3>
@@ -2973,6 +2978,11 @@ $("wizOpen").addEventListener("click",()=>openWiz());
   $("discOpen").addEventListener("click",show);
   let seen=false;try{seen=localStorage.getItem("gen-disc")==="1"}catch(e){}
   if(!seen)show()})();
+/* choix de la langue à la toute première ouverture */
+(function(){const bg=$("langBg");let has=false;try{has=localStorage.getItem("gen-lang")!==null}catch(e){has=true}
+  if(has)return;bg.hidden=false;
+  const pick=l=>()=>{setLang(l);bg.hidden=true};
+  $("langFr").addEventListener("click",pick("fr"));$("langEn").addEventListener("click",pick("en"))})();
 /* tutoriel de première utilisation */
 const TUTO=[
  {t:"Bienvenue dans Cadence",b:"<p>Ton plan est prêt. Voici un tour rapide de l'interface (environ une minute) pour bien t'en servir.</p><p>Tu peux quitter à tout moment avec « Passer » et le revoir plus tard depuis le menu ☰, section « Sauvegarde et autres appareils ».</p>"},
@@ -3074,7 +3084,7 @@ function tr(s){
   return lead+r+tail}
 const TRATTR=["placeholder","title","aria-label","alt"];
 function trNode(n){
-  if(n.nodeType===3){const p=n.parentNode;if(p&&(p.nodeName==="SCRIPT"||p.nodeName==="STYLE"||p.nodeName==="TEXTAREA"))return;
+  if(n.nodeType===3){const p=n.parentNode;if(p&&(p.nodeName==="SCRIPT"||p.nodeName==="STYLE"||p.nodeName==="TEXTAREA"||(p.closest&&p.closest("#langBg"))))return;
     const v=n.nodeValue;if(n.__en!==undefined&&v===n.__en)return;
     n.__fr=v;if(LANG==="en"){const t=tr(v);n.__en=t;if(t!==v)n.nodeValue=t}else n.__en=undefined;return}
   if(n.nodeType===1){const nm=n.nodeName;if(nm==="SCRIPT"||nm==="STYLE")return;

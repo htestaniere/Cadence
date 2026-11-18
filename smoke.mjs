@@ -77,6 +77,7 @@ const leftovers = async () => page.evaluate(() => {
   while ((n = w.nextNode())) {
     const p = n.parentNode.nodeName;
     if (p === "SCRIPT" || p === "STYLE" || p === "TEXTAREA") continue;
+    if (n.parentNode.closest && n.parentNode.closest("#langBg")) continue;
     const t = n.nodeValue.replace(/\s+/g, " ").trim();
     if (t && FR.test(t)) out.add(t.slice(0, 80));
   }
