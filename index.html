@@ -211,7 +211,7 @@ input[type=date]{font:inherit;font-size:14px;padding:4px 6px;border:1px solid va
 .zleg{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
 .zleg i{display:inline-block;width:12px;height:8px;border-radius:2px;margin-right:4px}
 .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
-.var,.edb,.ivb,.sup,.fbb{font-size:12px;line-height:1.3;padding:4px 10px;border-color:var(--c);color:var(--c);font-weight:600;white-space:nowrap}
+.var,.edb,.ivb,.sup,.fbb,.ivc{font-size:12px;line-height:1.3;padding:4px 10px;border-color:var(--c);color:var(--c);font-weight:600;white-space:nowrap}
 .fuel{font-size:12px;color:var(--muted);border-top:1px dashed var(--line);padding-top:6px}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
@@ -392,6 +392,9 @@ body.menu{overflow:hidden}
 .gin label{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:var(--muted);font-weight:600}
 .gin input{width:96px;font-size:14px}
 .gin input[readonly]{background:color-mix(in srgb,var(--c) 8%,var(--panel));color:var(--muted)}.gpx{margin:8px 0 4px}.gpxb{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;background:var(--panel)}.gpxi{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13px}.gpxi b{color:var(--c)}.gpxi button{font-size:12px;padding:3px 8px}.gpxc{width:100%;height:56px;color:var(--c);display:block;margin-top:6px}.gpxm{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}.gcl{margin-top:8px}
+.syncdiag{margin:6px 0}.syncdiag .hint{margin:4px 0 0}
+.rpe{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:6px;font-size:12px;color:var(--muted)}.rpe button{font-size:12px;padding:3px 9px;border-color:var(--line);color:var(--ink)}.rpe button[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:var(--bg);font-weight:700}
+.tsparks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:10px 0 4px}.tsp{border:1px solid var(--line);border-radius:8px;padding:6px 8px;display:flex;flex-direction:column;gap:1px;font-size:12px}.tsp .tsl{color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-size:11px}.tsp svg{width:100%;height:34px;color:var(--accent)}.tsp b{font-family:var(--display);font-size:16px}.tsp em{font-style:normal}
 .gplan table{width:100%;border-collapse:collapse;font-size:12px}.gplan th{text-align:left;color:var(--muted);font-weight:600;padding:2px 4px}.gplan td{padding:4px;border-top:1px solid var(--line);white-space:nowrap}.gplan td:nth-child(2){white-space:normal}.gplan .gp1 td:first-child{box-shadow:inset 3px 0 var(--c)}.gpxw{position:relative;padding-top:14px}.gpn{position:absolute;top:0;transform:translateX(-50%);min-width:16px;height:16px;border-radius:8px;background:var(--c);color:#fff;font:700 10px/16px var(--display);text-align:center;font-style:normal;padding:0 3px}.gplan .gpn{position:static;display:inline-block;transform:none}.gplan .gpf{font-size:14px;margin:2px 0 6px}.gplan .gpf b{color:var(--c);font-family:var(--display)}.gcl h4{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:4px}.gcl>div{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;font-size:13px;border-top:1px solid var(--line);padding:4px 0}.gcl b{color:var(--c);font-family:var(--display)}.gcl em{color:var(--muted);font-style:normal}
 .gnow,.gneed,.gst{margin:0;font-size:13px;font-variant-numeric:tabular-nums}
 .gnow{color:var(--muted)}
@@ -839,6 +842,7 @@ body.locked #updBtn{opacity:.4;cursor:not-allowed}
       <div id="syncBox" class="syncbox" hidden>
         <b>Synchroniser mes appareils</b>
         <p class="hint">Un code secret relie ton téléphone et ton ordi. Tes données sont chiffrées sur ton appareil : le serveur ne peut pas les lire, et il n'y a ni compte ni mot de passe.</p>
+        <div class="syncdiag"><button type="button" id="syncTest" class="ghost">Tester la connexion</button><p class="hint" id="syncDiag" aria-live="polite"></p></div>
         <div id="syncOff">
           <button type="button" id="syncCreate" class="ghost">Activer la synchro</button>
           <button type="button" id="syncJoin" class="ghost">J'ai déjà un code</button>
@@ -854,6 +858,7 @@ body.locked #updBtn{opacity:.4;cursor:not-allowed}
           <button type="button" id="syncWipe" class="ghost">Arrêter et effacer du serveur</button>
         </div>
       </div>
+      <p class="hint" id="bkLast"></p>
       <button type="button" id="bkExport" class="ghost">⬇ Exporter ma prépa</button>
       <button type="button" id="bkImportBtn" class="ghost">⬆ Importer une sauvegarde</button>
       <input type="file" id="bkFile" accept=".json,application/json" hidden>
@@ -878,6 +883,7 @@ body.locked #updBtn{opacity:.4;cursor:not-allowed}
   <div class="btns">
     <button id="saveHist">Enregistrer la semaine</button>
     <button id="copy" class="ghost">Copier la semaine</button>
+    <button id="icuSend" class="ghost">Envoyer vers intervals.icu</button><button id="icuCfg" class="ghost" aria-label="Réglages intervals.icu" title="Réglages intervals.icu">⚙</button>
   </div>
   <div class="toast" id="toast" role="status"></div>
 </aside>
@@ -960,15 +966,27 @@ function applySport(){renderExtra&&renderExtra();
 }
 
 /* ---------- contexte de calcul ---------- */
+/* ressenti des séances : 2 « trop dur » (ou « trop facile ») d'affilée dans un sport ajustent ses allures de 2 % (de −6 % à +8 %) */
+let BIAS={swim:0,bike:0,run:0},FB={};try{const b=JSON.parse(localStorage.getItem("gen-bias")||"null");if(b&&typeof b==="object")BIAS={...BIAS,...b};const f=JSON.parse(localStorage.getItem("gen-fb")||"null");if(f&&typeof f==="object")FB=f}catch(e){}
+const saveFB=()=>{try{localStorage.setItem("gen-bias",JSON.stringify(BIAS));localStorage.setItem("gen-fb",JSON.stringify(FB))}catch(e){}};
+function fbSet(key,v,sp){const old=FB[key];if(old&&old.v===v){delete FB[key];saveFB();return ""}
+  FB[key]={v,sp,t:Date.now()};let msg="";
+  if(v===0)Object.keys(FB).forEach(k=>{if(FB[k].sp===sp&&k!==key)FB[k].u=1});
+  else{const un=Object.keys(FB).filter(k=>FB[k].sp===sp&&!FB[k].u).sort((a,b)=>FB[a].t-FB[b].t),l2=un.slice(-2);
+    if(l2.length===2&&l2.every(k=>FB[k].v===v)){const nb=Math.max(-6,Math.min(8,BIAS[sp]+(v>0?2:-2)));if(nb!==BIAS[sp]){BIAS[sp]=nb;l2.forEach(k=>FB[k].u=1);
+      const nm={swim:ALT("natation","swimming"),bike:ALT("vélo","cycling"),run:ALT("course à pied","running")}[sp];
+      msg=v>0?ALT(`Allures ${nm} allégées de 2 % (${nb>0?"+":""}${nb} % au total).`,`${nm} paces eased by 2 % (${nb>0?"+":""}${nb} % total).`):ALT(`Allures ${nm} durcies de 2 % (${nb>0?"+":""}${nb} % au total).`,`${nm} paces tightened by 2 % (${nb>0?"+":""}${nb} % total).`)}}}
+  saveFB();return msg}
 function ctx(){
   const heat=!!($("heat")&&$("heat").checked), ow=!!($("ow")&&$("ow").checked);
   const hf=heat?1.03:1, pf=heat?0.95:1;
-  const S=(parseMMSS($("seuil").value)||240)*hf, css=parseMMSS($("css").value)||86;
-  const vma=(+$("vma").value||14)/hf, sp=3600/S;
+  const rb=1+BIAS.run/100,bb=1-BIAS.bike/100;
+  const S=(parseMMSS($("seuil").value)||240)*hf*rb, css=(parseMMSS($("css").value)||86)*(1+BIAS.swim/100);
+  const vma=(+$("vma").value||14)/hf/rb, sp=3600/S;
   const pace=k=>mmss(3600/k);
   const L=+$("lthrRun").value||168, LB=+$("lthrBike").value||158;
   const c={
-    S,css,vma,sp,heat,ow,ftp:Math.round((+$("ftp").value||220)*pf),ftpht:Math.round((+$("ftpht").value||205)*pf),kg:+$("kg").value||70,
+    S,css,vma,sp,heat,ow,ftp:Math.round((+$("ftp").value||220)*pf*bb),ftpht:Math.round((+$("ftpht").value||205)*pf*bb),kg:+$("kg").value||70,
     efMid:3600/(sp*0.785),
     ef:`${pace(sp*0.82)}–${pace(sp*0.75)}`, recup:pace(sp*0.72),
     mara:pace(sp*0.88), semi:pace(sp*0.96), d10:pace(sp*1.04), seuil:mmss(S),
@@ -2080,7 +2098,7 @@ function groupHTML(d,one){
     let inner;
     if(chained){
       const parts=g.items.map((s,k)=>(k&&s.chain?`<div class="tr" aria-hidden="true">↓ transition rapide</div>`:"")+one(s)).join("");
-      const nm={swim:ALT("natation","swim"),bike:ALT("vélo","bike"),run:ALT("course","run")};inner=`<div class="brick"><div class="brick-h">${ALT("Enchaînement","Brick")} ${g.items.map(x=>nm[x.k]).join(" → ")}</div>${parts}</div>`;
+      const nm={swim:ALT("natation","swim"),bike:ALT("vélo","bike"),run:ALT("course","run")};const ix=g.items.map(x=>SESS.indexOf(x)).filter(q=>q>=0);inner=`<div class="brick"><div class="brick-h">${ALT("Enchaînement","Brick")} ${g.items.map(x=>nm[x.k]).join(" → ")}</div>${parts}${ix.length>1?`<div class="acts"><button class="ivc ghost" data-ix="${ix.join(",")}">${ALT("Copier tout l'enchaînement","Copy the whole brick")}</button></div>`:""}</div>`;
     }else inner=g.items.map(one).join("");
     return `<section class="slot slot-${g.key}"><h4 class="slot-h"><span>${lab}</span></h4>${inner}</section>`;
   }).join("");
@@ -2302,6 +2320,9 @@ function computeWeeks(){
 }
 function extraAlerts(R){
   const al=[];
+  {const t0=todayISO(),a=bkAgeDays(),has=Object.keys(RACES||[]).length||Object.keys(HIST||{}).length||Object.keys(TL||{}).length;if(has&&(a===null||a>=21)&&R.P.date<=t0&&t0<addDays(R.P.date,7))al.push({c:"ok",t:ALT(a===null?"Pense à exporter une sauvegarde de ta prépa (☰ › Sauvegarde et autres appareils) : si le navigateur efface ses données, tout est perdu.":`Ta dernière sauvegarde par fichier date de ${a} jours : exporte-en une nouvelle (☰ › Sauvegarde et autres appareils).`,a===null?"Remember to export a backup of your plan (☰ › Backup and other devices): if the browser clears its data, everything is lost.":`Your last file backup is ${a} days old: export a new one (☰ › Backup and other devices).`)})}
+  [["run",ALT("course à pied","running")],["bike",ALT("vélo","cycling")],["swim",ALT("natation","swimming")]].forEach(([sp,nm])=>{if(HAS(sp)&&BIAS[sp])al.push({c:"ok",t:`${ALT(`Allures ${nm} ajustées de ${BIAS[sp]>0?"+":""}${BIAS[sp]} % d'après ton ressenti (${BIAS[sp]>0?"plus faciles":"plus dures"}).`,`${nm} paces adjusted by ${BIAS[sp]>0?"+":""}${BIAS[sp]} % based on your feel (${BIAS[sp]>0?"easier":"harder"}).`)} <button type="button" class="ghost" data-biasreset="${sp}">${ALT("Annuler l'ajustement","Reset")}</button>`})});
+  {const ag=tlAgeDays(),t0=todayISO();if(ag!==null&&ag>=56&&R.P.date<=t0&&t0<addDays(R.P.date,7)){const w=Math.round(ag/7);al.push({c:"warn",t:ALT(`Tes valeurs de test datent de ${w} semaines : refais un test (☰ › Mes valeurs et allures) pour que les allures restent justes.`,`Your test values are ${w} weeks old: redo a test (☰ › My values and paces) so the paces stay accurate.`)})}}
   if(R.P.label) al.push({c:"ok",t:ALT(`Calendrier : ${R.P.label}.`,`Calendar: ${R.P.label}.`)});
   const lim={base:5,cons:7,charge:7,saison:5}[R.type];
   if(lim&&R.ramp>lim+0.5) al.push({c:"warn",t:`Charge : la CTL monterait de +${R.ramp.toFixed(1)} cette semaine, au-dessus du repère de +${lim}. Baisse un peu les km.`});
@@ -2406,7 +2427,7 @@ function render(){
       const txt=IV[s.code]?ivText(s,c):null;
       const secs=txt?parseSteps(txt,s.k,c,F):null;
       const hr=HRNOTE[s.code]?HRNOTE[s.code](c):"";
-      return `<div class="sess" data-sk="${s._k}" style="--c:${COLORS[s.k]}"><div class="sph"><span class="spb">${SPN[s.k]}</span>${s.brick||s.fc||s.fs||s.ff?'<span class="pill">Enchaîné</span>':""}</div><div class="top"><span class="ttl"><span class="code">${s.code.replace(/^(C|V)B[eq]$/,"E")}</span>${s.item.n}${s.q?'<span class="pill q">Q</span>':""}${s.ov?'<span class="pill">Modifiée</span>':""}${sup?`<span class="pill">${sup}</span>`:""}</span><span class="dur">${hm(s.min)}<span class="tss"> · ${s.tss} TSS</span></span></div>${secs?chartSVG(secs,s.k)+stepsHTML(secs):`<div class="tg">${targetLine(s,c)}</div>`}${s.k==="bike"&&isHT&&s.avgW?`<div class="pw"><span>Puissance moyenne <b>${s.avgW} W</b></span><span>NP ≈ ${s.npW} W</span><span>${Math.round(s.avgW/c.ftpht*100)} % de ta FTP home trainer (${c.ftpht} W)</span></div>`:""}${hr?`<div class="tg">${hr}</div>`:""}${s.note?`<div class="tg">${s.note}</div>`:""}${s.k==="bike"&&isHT&&/56-7[05]%|45-55%/.test(IV[s.code]?IV[s.code](ivCtx(c),s.min,c):"")?`<div class="tg">Home trainer : l'endurance est découpée en cycles (paliers de puissance + changements de cadence) pour éviter le rythme constant.</div>`:""}${s.k==="bike"&&isHT&&s.min>90?`<div class="tg">Sur home trainer : ventilateur, et 0,5 L de boisson en plus par heure.</div>`:""}<div class="acts">${s.npool>1?`<button class="var ghost" data-v="${s.vkey}" data-w="${R.P.date}" aria-label="Autre séance à la place de ${s.code}">Autre séance</button>`:""}${!VIEW&&s.vkey?`<button class="edb ghost" data-i="${SESS.push(s)-1}" data-w="${R.P.date}" aria-label="Modifier la séance ${s.code}">Modifier la séance</button>`:""}${txt?`<button class="ivb ghost" data-i="${SESS.push(s)-1}" aria-label="Copier ${s.code} au format intervals.icu">Copier pour intervals.icu</button>`:""}${(s.k==="bike"||(s.k==="swim"&&SPORT==="tri")||(s.k==="run"&&SPORT==="dua"&&!s.brick))&&!VIEW&&(SPORT==="tri"||SPORT==="dua")&&!s.fc&&(enchOf(s.day)||((R.P.wo&&R.P.wo.fb)||{})[s.day])&&(R.week[s.day]||[]).find(x=>x.k===s.k&&!x.fc&&!x.brick)===s?`<button class="fbb ghost" data-fb="${s.day}" data-src="${s.k}" data-w="${R.P.date}">${((R.P.wo&&R.P.wo.fb)||{})[s.day]?ALT("Retirer l'enchaînement","Remove the brick"):s.k!=="bike"?ALT("Enchaîner avec le vélo","Chain with the bike"):ALT("Enchaîner avec une course","Chain with a run")}</button>`:""}${s.k==="bike"?`<button class="sup ghost" data-key="${i}:${s.code}" data-ht="${isHT?1:0}" aria-pressed="${isHT}">${isHT?"Passer en extérieur":"Passer sur home trainer"}</button>`:""}</div></div>`};
+      return `<div class="sess" data-sk="${s._k}" style="--c:${COLORS[s.k]}"><div class="sph"><span class="spb">${SPN[s.k]}</span>${s.brick||s.fc||s.fs||s.ff?'<span class="pill">Enchaîné</span>':""}</div><div class="top"><span class="ttl"><span class="code">${s.code.replace(/^(C|V)B[eq]$/,"E")}</span>${s.item.n}${s.q?'<span class="pill q">Q</span>':""}${s.ov?'<span class="pill">Modifiée</span>':""}${sup?`<span class="pill">${sup}</span>`:""}</span><span class="dur">${hm(s.min)}<span class="tss"> · ${s.tss} TSS</span></span></div>${secs?chartSVG(secs,s.k)+stepsHTML(secs):`<div class="tg">${targetLine(s,c)}</div>`}${s.k==="bike"&&isHT&&s.avgW?`<div class="pw"><span>Puissance moyenne <b>${s.avgW} W</b></span><span>NP ≈ ${s.npW} W</span><span>${Math.round(s.avgW/c.ftpht*100)} % de ta FTP home trainer (${c.ftpht} W)</span></div>`:""}${hr?`<div class="tg">${hr}</div>`:""}${s.note?`<div class="tg">${s.note}</div>`:""}${s.k==="bike"&&isHT&&/56-7[05]%|45-55%/.test(IV[s.code]?IV[s.code](ivCtx(c),s.min,c):"")?`<div class="tg">Home trainer : l'endurance est découpée en cycles (paliers de puissance + changements de cadence) pour éviter le rythme constant.</div>`:""}${s.k==="bike"&&isHT&&s.min>90?`<div class="tg">Sur home trainer : ventilateur, et 0,5 L de boisson en plus par heure.</div>`:""}${!VIEW&&s.k!=="race"&&s.k!=="renfo"?(()=>{const fk=R.P.date+":"+s.day+":"+s.code,cv=FB[fk]?FB[fk].v:null;return `<div class="rpe"><span>${ALT("Ressenti","Feel")}</span>${[[1,ALT("Trop dur","Too hard")],[0,ALT("Bien","Good")],[-1,ALT("Trop facile","Too easy")]].map(o=>`<button type="button" class="ghost" data-rp="${o[0]}" data-fk="${fk}" data-sp="${s.k}" aria-pressed="${cv===o[0]}">${o[1]}</button>`).join("")}</div>`})():""}<div class="acts">${s.npool>1?`<button class="var ghost" data-v="${s.vkey}" data-w="${R.P.date}" aria-label="Autre séance à la place de ${s.code}">Autre séance</button>`:""}${!VIEW&&s.vkey?`<button class="edb ghost" data-i="${SESS.push(s)-1}" data-w="${R.P.date}" aria-label="Modifier la séance ${s.code}">Modifier la séance</button>`:""}${txt?`<button class="ivb ghost" data-i="${SESS.push(s)-1}" aria-label="Copier ${s.code} au format intervals.icu">Copier pour intervals.icu</button>`:""}${(s.k==="bike"||(s.k==="swim"&&SPORT==="tri")||(s.k==="run"&&SPORT==="dua"&&!s.brick))&&!VIEW&&(SPORT==="tri"||SPORT==="dua")&&!s.fc&&(enchOf(s.day)||((R.P.wo&&R.P.wo.fb)||{})[s.day])&&(R.week[s.day]||[]).find(x=>x.k===s.k&&!x.fc&&!x.brick)===s?`<button class="fbb ghost" data-fb="${s.day}" data-src="${s.k}" data-w="${R.P.date}">${((R.P.wo&&R.P.wo.fb)||{})[s.day]?ALT("Retirer l'enchaînement","Remove the brick"):s.k!=="bike"?ALT("Enchaîner avec le vélo","Chain with the bike"):ALT("Enchaîner avec une course","Chain with a run")}</button>`:""}${s.k==="bike"?`<button class="sup ghost" data-key="${i}:${s.code}" data-ht="${isHT?1:0}" aria-pressed="${isHT}">${isHT?"Passer en extérieur":"Passer sur home trainer"}</button>`:""}</div></div>`};
     const body=d.length?groupHTML(d,one):`<div class="rest">Repos</div>`;
     return `<article class="day"><header><h3>${DAYS[i]}</h3><span class="t">${dm||d.some(s=>s.k==="renfo")?hm(d.reduce((a,s)=>a+s.min,0)):"–"}</span></header>${body}</article>`
   }).join("");
@@ -2480,6 +2501,12 @@ onWeekClick(e=>{const v=e.target.closest(".var");if(!v)return;
   {const d=v.dataset.w,wo=d&&WOVR[d];if(wo&&wo.sess&&wo.sess[v.dataset.v]){const ss={...wo.sess};delete ss[v.dataset.v];setWo(d,{sess:Object.keys(ss).length?ss:undefined})}}
   VAR[v.dataset.v]=(VAR[v.dataset.v]||0)+1;render()});
 onWeekClick(e=>{const t=e.target.closest(".sup");if(!t)return;OV[t.dataset.key]=t.dataset.ht!=="1";render()});
+onWeekClick(e=>{const b=e.target.closest("[data-rp]");if(!b)return;if(LOCKED){lockHint();return}const msg=fbSet(b.dataset.fk,+b.dataset.rp,b.dataset.sp);LASTAUTO="";render();if(msg)gToast(msg)});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-biasreset]");if(!b)return;BIAS[b.dataset.biasreset]=0;Object.keys(FB).forEach(k=>{if(FB[k].sp===b.dataset.biasreset)FB[k].u=1});saveFB();LASTAUTO="";render()});
+onWeekClick(async e=>{const b=e.target.closest(".ivc");if(!b)return;const c=window.__last.c,parts=b.dataset.ix.split(",").map(q=>SESS[+q]).filter(Boolean).map(x=>ivText(x,c)).filter(Boolean);
+  const t=parts.map((x,i)=>`=== ${ALT("Séance","Session")} ${i+1}/${parts.length} (${ALT("à enchaîner sans pause","back to back")}) ===\n${x}`).join("\n\n");
+  try{await navigator.clipboard.writeText(t);b.textContent=ALT("Copié ✓","Copied ✓")}catch(err){b.textContent=ALT("Copie refusée","Copy refused")}
+  setTimeout(()=>{b.textContent=ALT("Copier tout l'enchaînement","Copy the whole brick")},3000)});
 onWeekClick(async e=>{const b=e.target.closest(".ivb");if(!b)return;const s=SESS[+b.dataset.i];const t=ivText(s,window.__last.c);
   try{await navigator.clipboard.writeText(t);b.textContent="Copié ✓";$("toast2").textContent=`${s.code} copiée : colle-la dans le constructeur de séances d'intervals.icu.`}catch(err){b.textContent="Copie refusée"}
   setTimeout(()=>{b.textContent="Copier pour intervals.icu";$("toast2").textContent=""},3000)});
@@ -2694,6 +2721,16 @@ const curVals=()=>({vma:+$("vma").value||0,seuil:$("seuil").value,ftp:+$("ftp").
 function logTest(){if(VIEW)return;const d=todayISO(),v=curVals(),ks=Object.keys(TL).sort(),last=ks.length?TL[ks[ks.length-1]]:null;
   if(last&&JSON.stringify(last)===JSON.stringify(v))return;TL[d]=v;saveTL()}
 ["vma","seuil","ftp","ftpht","css"].forEach(id=>$(id).addEventListener("change",()=>{logTest();renderGoal()}));
+/* évolution des valeurs de test : mini-courbes + ancienneté du dernier test */
+function tlAgeDays(){const ks=Object.keys(TL).sort();if(!ks.length)return null;return Math.round((parseISO(todayISO())-parseISO(ks[ks.length-1]))/864e5)}
+function tlSpark(){const all=Object.keys(TL).sort();if(all.length<2)return "";
+  const M=[["seuil",ALT("Seuil","Threshold"),"run",v=>parseMMSS(v),-1,x=>mmss(x)+"/km"],["vma","VMA","run",v=>+v||NaN,1,x=>fr(x.toFixed(1))+" km/h"],["ftp","FTP","bike",v=>+v||NaN,1,x=>Math.round(x)+" W"],["ftpht",ALT("FTP home trainer","Trainer FTP"),"bike",v=>+v||NaN,1,x=>Math.round(x)+" W"],["css","CSS","swim",v=>parseMMSS(v),-1,x=>mmss(x)+"/100 m"]].filter(m=>HAS(m[2]));
+  const cards=M.map(m=>{const pts=all.map(k=>({k,v:m[3](TL[k][m[0]])})).filter(p=>Number.isFinite(p.v)&&p.v>0);if(pts.length<2)return "";
+    const vs=pts.map(p=>p.v),mn=Math.min(...vs),mx=Math.max(...vs),W=120,H=34,x=i=>(pts.length>1?i/(pts.length-1):0)*(W-6)+3,y=v=>mx===mn?H/2:(H-5)-((v-mn)/(mx-mn))*(H-10)+2;
+    const d=pts.map((p,i)=>x(i).toFixed(1)+","+y(p.v).toFixed(1)).join(" "),first=vs[0],last=vs[vs.length-1],diff=last-first,good=diff*m[4]>0,flat=Math.abs(diff)<1e-9;
+    const dt=(m[4]<0?(diff>0?"+":"−")+Math.abs(Math.round(diff))+" s":(diff>0?"+":"−")+Math.abs(Math.round(diff*10)/10).toString().replace(".",",")+(m[0]==="vma"?" km/h":" W"));
+    return `<div class="tsp"><span class="tsl">${m[1]}</span><svg viewBox="0 0 ${W} ${H}" aria-hidden="true"><polyline points="${d}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>${pts.map((p,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="2" fill="currentColor"/>`).join("")}</svg><b>${m[5](last)}</b><em style="color:var(--${flat?"muted":good?"ok":"warn"})">${flat?"=":dt} ${ALT("depuis","since")} ${frDate(pts[0].k)}</em></div>`}).join("");
+  return cards?`<div class="tsparks">${cards}</div>`:""}
 /* modèle vélo simplifié : plat + montées à 6,5 % + descentes */
 function vAt(P,grade,kg,cda){const m=kg+9,g=9.81,crr=.004,rho=1.2,eta=.97,th=Math.atan(grade);let lo=.5,hi=30;
   for(let k=0;k<50;k++){const v=(lo+hi)/2,need=(crr*m*g*Math.cos(th)+m*g*Math.sin(th)+.5*rho*cda*v*v)*v/eta;if(need>P)hi=v;else lo=v}return (lo+hi)/2}
@@ -2753,6 +2790,13 @@ function gpxChart(gp,marks){const {z}=gpxElev(gp),mn=Math.min(...z),mx=Math.max(
   for(let i=0;i<z.length;i+=step)d+=`${(i/(z.length-1)*W).toFixed(1)},${(H-4-(z[i]-mn)/Math.max(1,mx-mn)*(H-10)).toFixed(1)} `;
   return `<div class="gpxw">${(marks||[]).map((m,i)=>`<i class="gpn" style="left:${(Math.min(1,(m.km+m.L)/gp.d)*100).toFixed(1)}%">${i+1}</i>`).join("")}<svg class="gpxc" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><polygon points="0,${H} ${d}${W},${H}" fill="currentColor" opacity=".18"/><polyline points="${d}" fill="none" stroke="currentColor" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg><div class="gpxm"><span>${Math.round(mn)} m</span><span>${Math.round(mx)} m</span></div></div>`;}
 function gpxRow(k,gp){const mk=gp&&k==="bike"?bikePlan(gp,200,70,.3).filter(keyClimb):null;return `<div class="gpx">${gp?`<div class="gpxi"><b>GPX</b><span>${esc(gp.n)} · ${fr(gp.d.toFixed(1))} km · +${gp.dp} m / −${gp.dm} m</span><button type="button" class="ghost" data-gpxdel="${k}">${ALT("Retirer","Remove")}</button></div>${gpxChart(gp,mk)}`:`<label class="gpxb">${ALT("Importer un GPX","Import a GPX")}<input type="file" accept=".gpx,application/gpx+xml,text/xml,application/xml" data-gpx="${k}" hidden></label>`}</div>`}
+/* allure ajustée à la pente (Minetti, adoucie) : facteur de temps par rapport au plat */
+function gapF(g){g=Math.max(-.25,Math.min(.4,g));const C=x=>155.4*x**5-30.4*x**4-43.3*x**3+46.3*x**2+19.5*x+3.6;return Math.max(.7,1+.75*(C(g)/3.6-1))}
+function gapKm(gp){let s=0;const n=gp.g.length;for(let i=0;i<n;i++){const L=i===n-1?gp.lr:100;s+=L*gapF(gp.g[i]/1000)}return s/1000}
+function runPlanHTML(gp,t){const n=gp.g.length,km=gapKm(gp),p0=t/km,bin=gp.d<=25?1:gp.d<=60?2:5,rows=[];let cum=0,d=0,bT=0,bL=0,bZ=0,b0=0;
+  for(let i=0;i<n;i++){const L=i===n-1?gp.lr:100,f=gapF(gp.g[i]/1000),dt=L/1000*p0*f;bT+=dt;bL+=L;bZ+=gp.g[i]*L/1000;d+=L;cum+=dt;
+    if(bL>=bin*1000-1||i===n-1){rows.push({a:b0/1000,b:d/1000,gr:bZ/bL*100,pace:bT/(bL/1000),cum});b0=d;bT=0;bL=0;bZ=0}}
+  return `<div class="gcl gplan"><h4>${ALT("Plan d'allure","Pacing plan")}</h4><p class="gpf">${ALT("Sur le plat","On the flat")} : <b>${mmss(p0)}/km</b></p><table><tr><th>km</th><th>${ALT("Pente","Grade")}</th><th>${ALT("Allure","Pace")}</th><th>${ALT("Passage","Split")}</th></tr>${rows.map(r=>`<tr><td>${fr(r.a.toFixed(r.a%1?1:0))}–${fr(r.b.toFixed(r.b%1?1:0))}</td><td>${r.gr>0?"+":r.gr<0?"−":""}${fr(Math.abs(r.gr).toFixed(1))} %</td><td><b>${mmss(r.pace)}</b>/km</td><td>${hms(r.cum)}</td></tr>`).join("")}</table></div>`}
 /* principales montées : alternance vallée → sommet avec seuil de 20 m */
 function gpxClimbs(gp,vap,trail){const {z,x}=gpxElev(gp),H=20,minGain=trail?80:50;let dir=0,hi=0,lo=0;const tp=[];
   for(let i=1;i<z.length;i++){if(z[i]>z[hi])hi=i;if(z[i]<z[lo])lo=i;
@@ -2799,7 +2843,7 @@ function renderGoal(){
     body+=`<p class="gnow">Aujourd'hui, avec ta FTP : environ <b>${hms(tNow)}</b> à ${now} W, soit ${wkg(now)} W/kg (${fr((dist/(tNow/3600)).toFixed(1))} km/h)${dp?`, ${dp} m de D+`:""}</p>`;
     body+=gp?`<p class="hint" style="margin:0">${ALT(`Calculé sur ton GPX (une pente tous les 100 m) pour ${kg} kg + vélo, position ${bt==="route"?"route":"aéro"} : montées un peu plus appuyées, descentes en roue libre. Pas de vent ni d'arrêts.`,`Calculated from your GPX (one grade every 100 m) for ${kg} kg + bike, ${bt==="route"?"road":"aero"} position: climbs a bit harder, coasting downhill. No wind or stops.`)}</p>`:`<p class="hint" style="margin:0">Estimation pour ${kg} kg + vélo, position ${bt==="route"?"route":"aéro"}, montées vers 5,5 % un peu plus appuyées, descentes en roue libre. Pas de vent ni d'arrêts.</p>`;
     out.push(card("bike",body))}
-  if(D.run){const g=r.goal.run||{},gp=g.gpx||null,dist=gp?gp.d:(+g.d||D.run),dp=gp?gp.dp:(+g.dp||0),t=parseT(g.t,"run"),fac=GRUN[sp][f];const sp0=3600/S0,nowPace=3600/(sp0*fac),ke=dist+dp/100;
+  if(D.run){const g=r.goal.run||{},gp=g.gpx||null,dist=gp?gp.d:(+g.d||D.run),dp=gp?gp.dp:(+g.dp||0),t=parseT(g.t,"run"),fac=GRUN[sp][f];const sp0=3600/S0,nowPace=3600/(sp0*fac),ke=gp?gapKm(gp):dist+dp/100;
     const tr=sp==="trail"||g.trail==="1",vap=+g.vap||0;
     let body=`<h3>${tr?"Trail":"Course à pied"}</h3><div class="gin">${sp==="trail"?"":`<label>Parcours<select data-g="run.trail"><option value="0">Route</option><option value="1" ${g.trail==="1"?"selected":""}>Trail</option></select></label>`}<label>Distance (km)<input data-g="run.d" value="${dist}" inputmode="decimal"${gp?" readonly":""}></label><label>Dénivelé + (m)<input data-g="run.dp" value="${dp||""}" placeholder="0" inputmode="numeric"${gp?" readonly":""}></label>${tr?`<label>VAP visée en montée (m/h)<input data-g="run.vap" value="${vap||""}" placeholder="ex. 700" inputmode="numeric"></label>`:""}<label>Temps visé<input data-g="run.t" value="${esc(g.t||"")}" placeholder="ex. 1h25"><i class="tread">${t?"= "+hmsTxt(t):g.t?"format non reconnu":""}</i></label></div>`;
     body+=gpxRow("run",gp);if(t){const flat=t/ke,needS=3600/((3600/flat)/fac),ratio=S0>0?needS/S0:0;
@@ -2810,15 +2854,15 @@ function renderGoal(){
       if(vap){const cl=dp/vap*3600;items.push(["Temps passé à monter",hms(cl),`${dp} m à ${vap} m/h`+(t?` · ${Math.round(cl/t*100)} % du temps visé`:"")])}
       if(items.length)body+=tgt(items);
       else body+=`<p class="hint" style="margin:0">Entre une VAP visée (vitesse ascensionnelle, en m de D+ par heure de montée) pour obtenir ton temps de montée.</p>`}
-    if(gp&&dp)body+=gpxClimbs(gp,vap,tr);body+=`<p class="gnow">Aujourd'hui, avec ton seuil : environ <b>${hms(nowPace*ke)}</b>, soit ${mmss(nowPace*ke/dist)}/km${dp?` (${mmss(nowPace)}/km sur le plat)`:""}</p>`;
-    if(dp)body+=`<p class="hint" style="margin:0">Règle du km-effort : 100 m de D+ ≈ 1 km de plat en plus.</p>`;
+    if(gp&&dp)body+=gpxClimbs(gp,vap,tr);if(gp&&t)body+=runPlanHTML(gp,t);body+=`<p class="gnow">Aujourd'hui, avec ton seuil : environ <b>${hms(nowPace*ke)}</b>, soit ${mmss(nowPace*ke/dist)}/km${dp?` (${mmss(nowPace)}/km sur le plat)`:""}</p>`;
+    if(dp)body+=gp?`<p class="hint" style="margin:0">${ALT("Allures ajustées à la pente de ton GPX (une pente tous les 100 m) : plus lentes en montée, plus rapides en descente.","Paces adjusted to your GPX grade (one grade every 100 m): slower uphill, faster downhill.")}</p>`:`<p class="hint" style="margin:0">Règle du km-effort : 100 m de D+ ≈ 1 km de plat en plus.</p>`;
     out.push(card("run",body))}
   $("goalGrid").innerHTML=out.join("");
   $("goalSum").textContent=`${r.n} · ${frDate(r.d)}${sum.length?" · "+sum.join(" · "):" · entre tes objectifs"}`;
   /* historique des tests */
   const ks=Object.keys(TL).sort().slice(-8);
   if(ks.length){const cols=[["seuil","Seuil","run",v=>v],["vma","VMA","run",v=>v?fr(v):"–"],["ftp","FTP","bike",v=>v?v+" W":"–"],["ftpht","FTP HT","bike",v=>v?v+" W":"–"],["css","CSS","swim",v=>v]].filter(c=>HAS(c[2]));
-    $("goalLog").innerHTML=`<h3>Mes résultats de tests</h3><table><thead><tr><th>Date</th>${cols.map(c=>`<th>${c[1]}</th>`).join("")}</tr></thead><tbody>${ks.map(k=>`<tr><td>${frDate(k)}</td>${cols.map(c=>`<td>${c[3](TL[k][c[0]])}</td>`).join("")}</tr>`).join("")}</tbody></table><p class="hint">Une ligne est ajoutée chaque fois que tu modifies tes valeurs (☰ › Mes valeurs et allures).</p>`}
+    $("goalLog").innerHTML=`<h3>Mes résultats de tests</h3><table><thead><tr><th>Date</th>${cols.map(c=>`<th>${c[1]}</th>`).join("")}</tr></thead><tbody>${ks.map(k=>`<tr><td>${frDate(k)}</td>${cols.map(c=>`<td>${c[3](TL[k][c[0]])}</td>`).join("")}</tr>`).join("")}</tbody></table>${tlSpark()}<p class="hint">Une ligne est ajoutée chaque fois que tu modifies tes valeurs (☰ › Mes valeurs et allures).</p>`}
   else $("goalLog").innerHTML="";
 }
 $("goalRace").addEventListener("change",()=>{GSEL=$("goalRace").value;renderGoal()});
@@ -2940,6 +2984,36 @@ onWeekClick(e=>{const b=e.target.closest("[data-fb]");if(!b)return;if(LOCKED){lo
   const d=b.dataset.w,di=b.dataset.fb,wo=WOVR[d]||{};
   if((wo.fb||{})[di]){const f={...wo.fb};delete f[di];setWo(d,{fb:Object.keys(f).length?f:undefined});LASTAUTO="";render();return}
   dlgFb(d,di,b.dataset.src)});
+/* ---------- envoi de la semaine vers intervals.icu (clé API, stockée sur cet appareil seulement) ---------- */
+const ICU_URL="https://intervals.icu/api/v1/athlete/0";
+const icuKey=()=>{try{return localStorage.getItem("gen-icu")||""}catch(e){return ""}};
+const icuHdr=k=>({"Authorization":"Basic "+btoa("API_KEY:"+k),"Content-Type":"application/json"});
+function icuExplain(e){const m=String(e&&e.message||e);return /^HTTP 40[13]/.test(m)?ALT("Clé refusée par intervals.icu : vérifie qu'elle est complète, ou génères-en une nouvelle.","Key refused by intervals.icu: check it is complete, or generate a new one."):/^HTTP/.test(m)?ALT("intervals.icu a répondu une erreur : ","intervals.icu returned an error: ")+m:ALT("L'envoi n'a pas abouti (pas de connexion, ou le navigateur bloque l'appel). Utilise « Copier pour intervals.icu » en attendant.","The send failed (no connection, or the browser blocked the call). Use “Copy for intervals.icu” meanwhile.")}
+async function icuCall(path,opt,k){const r=await fetch(ICU_URL+path,{...opt,headers:icuHdr(k||icuKey())});if(!r.ok){let b="";try{b=(await r.text()).slice(0,120)}catch(e){}throw new Error("HTTP "+r.status+" "+b)}return r.json()}
+function icuEvents(L){const c=L.c,t0=todayISO(),T={matin:"07:30",midi:"12:30",soir:"18:30"},ev=[];let skipped=0;
+  L.week.forEach((d,i)=>{const date=addDays(L.P.date,i);if(date<t0){if(d.some(s=>s.k!=="race"&&s.k!=="renfo"))skipped++;return}
+    d.forEach(s=>{if(s.k==="race"||s.k==="renfo")return;const txt=ivText(s,c),tp=s.k==="swim"?"Swim":s.k==="run"?"Run":(s.isHT?"VirtualRide":"Ride");
+      const e={category:"WORKOUT",start_date_local:`${date}T${T[s.m]||"12:00"}:00`,type:tp,external_id:`cadence-${L.P.date}-${i}-${s.code}-${s.k}`,moving_time:Math.round(s.min*60)};
+      if(txt){const lines=txt.split("\n");e.name=lines[0];e.description=lines.slice(1).join("\n").trim()}else e.name=tr(s.item.n);
+      ev.push(e)})});
+  return {ev,skipped}}
+function dlgIcu(){dlgOpen(`<h3>${ALT("Connecter intervals.icu","Connect intervals.icu")}</h3>
+  <p class="hint">${ALT("Une seule fois : dans intervals.icu, ouvre Settings → Developer Settings, clique sur « Generate API key », copie la clé et colle-la ici. Elle reste sur cet appareil.","Once only: in intervals.icu open Settings → Developer Settings, click “Generate API key”, copy the key and paste it here. It stays on this device.")}</p>
+  <label class="dl-row">${ALT("Clé API","API key")}<input id="icuIn" type="password" autocomplete="off" spellcheck="false" value="${esc(icuKey())}" placeholder="${ALT("colle ta clé ici","paste your key here")}"></label>
+  <p class="hint" id="icuMsg" aria-live="polite"></p>
+  <div class="dl-btns">${icuKey()?`<button type="button" class="ghost" id="icuDel">${ALT("Retirer la clé","Remove the key")}</button>`:""}<span style="flex:1"></span><button type="button" class="ghost" data-dclose>${ALT("Fermer","Close")}</button><button type="button" id="icuOk">${ALT("Enregistrer et tester","Save and test")}</button></div>`);
+  $("icuOk").onclick=async()=>{const k=$("icuIn").value.trim();if(!k){$("icuMsg").textContent=ALT("Colle d'abord ta clé.","Paste your key first.");return}
+    $("icuMsg").textContent=ALT("Test en cours…","Testing…");
+    try{const a=await icuCall("",{method:"GET"},k);try{localStorage.setItem("gen-icu",k)}catch(e){}$("icuMsg").textContent=ALT(`Connecté${a&&a.name?" : "+a.name:""}. Tu peux maintenant envoyer ta semaine.`,`Connected${a&&a.name?": "+a.name:""}. You can now send your week.`)}
+    catch(e){$("icuMsg").textContent=icuExplain(e)}};
+  if($("icuDel"))$("icuDel").onclick=()=>{try{localStorage.removeItem("gen-icu")}catch(e){}dlgClose();gToast(ALT("Clé retirée de cet appareil.","Key removed from this device."))}}
+$("icuSend").addEventListener("click",async()=>{if(!icuKey()){dlgIcu();return}const L=window.__last;if(!L)return;const {ev,skipped}=icuEvents(L),B=$("icuSend");
+  if(!ev.length){gToast(ALT("Aucune séance à venir à envoyer cette semaine.","No upcoming session to send this week."));return}
+  B.disabled=true;try{await icuCall("/events/bulk?upsert=true",{method:"POST",body:JSON.stringify(ev)});
+    gToast(ALT(`${ev.length} séance${ev.length>1?"s":""} envoyée${ev.length>1?"s":""} vers intervals.icu${skipped?` (${skipped} jour${skipped>1?"s":""} passé${skipped>1?"s":""} ignoré${skipped>1?"s":""})`:""}. Elles arrivent sur ta montre après la synchro.`,`${ev.length} session${ev.length>1?"s":""} sent to intervals.icu${skipped?` (${skipped} past day${skipped>1?"s":""} skipped)`:""}. They reach your watch after sync.`))}
+  catch(e){const m=String(e&&e.message||e);if(/^HTTP 40[13]/.test(m)){dlgIcu();$("icuMsg").textContent=icuExplain(e)}else gToast(icuExplain(e))}
+  B.disabled=false});
+$("icuCfg").addEventListener("click",dlgIcu);
 function dlgCons(d){const wo=WOVR[d]||{};
   const base=DAYS.map((x,i)=>wo.av?wo.av[i]:{c:$("a"+i+"c").value,e:$("a"+i+"e").checked,r:$("a"+i+"r").checked||(wo.off||[]).includes(i),s:$("sd"+i).checked,l:$("lg"+i).value});
   const showE=HAS("bike")&&HAS("run"),showS=HAS("swim");
@@ -3047,12 +3121,15 @@ function lockHint(){const b=$("lockBtn");b.classList.remove("shake");void b.offs
 let GT=null;function gToast(m){const t=$("gtoast");t.textContent=m;t.classList.add("on");clearTimeout(GT);GT=setTimeout(()=>t.classList.remove("on"),2600)}
 
 /* ---------- export / import ---------- */
-const BKKEYS=["gen-sport","gen-extra","gen-wiz","gen-semaines-v2","gen-races","gen-hist","gen-tests","gen-wovr","gen-mv","gen-lock","gen-wdet"];
+const BKKEYS=["gen-sport","gen-extra","gen-wiz","gen-semaines-v2","gen-races","gen-hist","gen-tests","gen-wovr","gen-mv","gen-lock","gen-wdet","gen-bias","gen-fb"];
+function bkAgeDays(){let t=0;try{t=+localStorage.getItem("gen-lastbk")||0}catch(e){}return t?Math.floor((Date.now()-t)/864e5):null}
+function bkLastTxt(){const el=$("bkLast");if(!el)return;const a=bkAgeDays();el.textContent=a===null?ALT("Aucune sauvegarde par fichier faite sur cet appareil.","No file backup made on this device yet."):a===0?ALT("Dernière sauvegarde par fichier : aujourd'hui.","Last file backup: today."):ALT(`Dernière sauvegarde par fichier : il y a ${a} jour${a>1?"s":""}.`,`Last file backup: ${a} day${a>1?"s":""} ago.`)}
+bkLastTxt();
 $("bkExport").addEventListener("click",()=>{save();const data={app:"prepa",v:2,date:new Date().toISOString(),keys:{}};
   BKKEYS.forEach(k=>{try{const v=localStorage.getItem(k);if(v!==null)data.keys[k]=v}catch(e){}});
   const name=`cadence-sauvegarde-${todayISO()}.json`,txt=JSON.stringify(data);
   const viaBlob=()=>{const blob=new Blob([txt],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)};
-  const ok=()=>gToast("Sauvegarde exportée : envoie le fichier sur ton autre appareil, puis « Importer ».");
+  const ok=()=>{try{localStorage.setItem("gen-lastbk",String(Date.now()))}catch(e){}bkLastTxt();gToast("Sauvegarde exportée : envoie le fichier sur ton autre appareil, puis « Importer ».")};
   (async()=>{try{const dl=window.claude&&window.claude.use?await window.claude.use("downloads"):null;
     if(dl){await dl.save({filename:name,data:txt});ok();return}}catch(e){gToast("Export annulé.");return}
     viaBlob();ok()})()});
@@ -3087,7 +3164,7 @@ const SYNC_URL="https://ojmlbwufdsexuytauwfc.supabase.co",SYNC_KEY="sb_publishab
   const seal=async(c,o)=>{const iv=crypto.getRandomValues(new Uint8Array(12));return b64(iv)+"."+b64(await crypto.subtle.encrypt({name:"AES-GCM",iv},await key(c),enc.encode(JSON.stringify(o))))};
   const open=async(c,s)=>{const p=s.split(".");return JSON.parse(dec.decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:unb64(p[0])},await key(c),unb64(p[1]))))};
   const rpc=async(fn,args)=>{const h={apikey:SYNC_KEY,"Content-Type":"application/json"};if(!/^sb_/.test(SYNC_KEY))h.Authorization="Bearer "+SYNC_KEY;
-    const r=await fetch(SYNC_URL+"/rest/v1/rpc/"+fn,{method:"POST",headers:h,body:JSON.stringify(args)});if(!r.ok)throw new Error("HTTP "+r.status);const t=await r.text();return t?JSON.parse(t):null};
+    const r=await fetch(SYNC_URL+"/rest/v1/rpc/"+fn,{method:"POST",headers:h,body:JSON.stringify(args)});if(!r.ok){let b="";try{b=(await r.text()).slice(0,160)}catch(e){}throw new Error("HTTP "+r.status+" "+b)}const t=await r.text();return t?JSON.parse(t):null};
   const snap=()=>{const o={};SK.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)o[k]=v});return o};
   const st=m=>{$("syncStatus").textContent=m};
   const hh=()=>new Date().toLocaleTimeString(LANG==="en"?"en-GB":"fr-FR",{hour:"2-digit",minute:"2-digit"});
@@ -3121,6 +3198,12 @@ const SYNC_URL="https://ojmlbwufdsexuytauwfc.supabase.co",SYNC_KEY="sb_publishab
     S={code:c,ts:+r.ts,last:+r.ts};sv();applyRemote(rem,+r.ts)},1));
   $("syncCopy").addEventListener("click",()=>{const t=fmt(S.code);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>gToast(ALT("Code copié.","Code copied.")),()=>gToast(t))});
   $("syncNow").addEventListener("click",()=>run(_pull,1));
+  $("syncTest").addEventListener("click",async()=>{const dg=$("syncDiag"),B=$("syncTest");B.disabled=true;dg.textContent=ALT("Test en cours…","Testing…");
+    const id="diag-"+Array.from(crypto.getRandomValues(new Uint8Array(8)),x=>x.toString(16).padStart(2,"0")).join("");
+    try{const cur=await rpc("cadence_put",{p_id:id,p_data:"a.b",p_ts:1});const rows=await rpc("cadence_get",{p_id:id});await rpc("cadence_del",{p_id:id});
+      dg.textContent=(+cur===1&&rows&&rows[0]&&rows[0].data==="a.b")?ALT("Connexion OK : écriture, lecture et suppression fonctionnent. Tu peux activer la synchro.","Connection OK: write, read and delete all work. You can turn on sync."):ALT("Le serveur répond mais pas comme prévu : vérifie que le script SQL a bien été exécuté en entier.","The server answers but not as expected: check that the SQL script ran in full.")}
+    catch(e){const m=String(e&&e.message||e);dg.textContent=/^HTTP 404|PGRST202|Could not find/.test(m)?ALT("Le serveur est joint mais les fonctions n'existent pas : exécute le script cadence-sync.sql dans Supabase (SQL Editor).","The server is reachable but the functions don't exist: run the cadence-sync.sql script in Supabase (SQL Editor)."):/^HTTP 40[13]/.test(m)?ALT("Clé refusée par Supabase (HTTP 401/403) : vérifie la clé publique dans l'appli, ou les droits execute du script.","Key refused by Supabase (HTTP 401/403): check the public key in the app, or the script's execute grants."):/^HTTP/.test(m)?ALT("Erreur du serveur : ","Server error: ")+m:ALT("Impossible de joindre Supabase : connexion coupée, ou projet en pause (gratuit : mis en pause après 7 jours sans activité).","Can't reach Supabase: no connection, or the project is paused (free tier: paused after 7 days of inactivity).")}
+    B.disabled=false});
   $("syncStop").addEventListener("click",()=>{if(!window.confirm(ALT("Arrêter la synchro sur cet appareil ? Tes données restent ici et sur le serveur.","Stop syncing on this device? Your data stays here and on the server.")))return;S=null;sv();ui();gToast(ALT("Synchro arrêtée.","Sync stopped."))});
   $("syncWipe").addEventListener("click",()=>{if(!window.confirm(ALT("Arrêter la synchro et effacer les données du serveur ? Les autres appareils ne seront plus synchronisés.","Stop syncing and erase the data from the server? Other devices will no longer sync.")))return;
     run(async()=>{await rpc("cadence_del",{p_id:await ident(S.code)});S=null;sv();ui();gToast(ALT("Données effacées du serveur.","Data erased from the server."))},1)});
