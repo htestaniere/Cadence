@@ -1389,7 +1389,9 @@ function build(P){
   const rot=bw-1+variant, seed=Math.floor((Date.parse(P.date||"2026-01-05")||0)/6048e5)+variant*7;
   const week=DAYS.map(()=>[]);
   const alerts=[];
+  const onlyOf=i=>CUR_AV&&CUR_AV[i]?(CUR_AV[i].o||""):"",blk=(i,k)=>{const o=onlyOf(i);return !!o&&o!==k};
 
+  if(FIXED[type]&&CUR_AV&&CUR_AV.some(a=>a&&a.o))alerts.push({c:"warn",t:ALT("« Un seul sport » n'est pas appliqué sur une semaine de course ou de récupération.","“Only one sport” is not applied on a race or recovery week.")});
   if(FIXED[type]){
     FIXED[type].forEach((day,i)=>day.forEach(s=>{
       if(s.k==="race"){week[i].push({k:"race",min:0});return}
@@ -1431,7 +1433,7 @@ function build(P){
       if(x.q){delete x.q;x.pool=[{swim:"N21",bike:"V2",run:"C21"}[x.k]];x.w=Math.min(x.w||1,1)}
       x.max=Math.min(x.max||90,{swim:45,bike:100,run:60}[x.k]);x.min=Math.min(x.min||30,x.max)}}});
   /* jour de la sortie longue choisi dans les contraintes */
-  {const CB=[],CR=[];DAYS.forEach((d,i)=>{const v=CUR_AV?(CUR_AV[i].l||""):$("lg"+i).value;if(availOf(i).length){if(v.includes("V"))CB.push(i);if(v.includes("C"))CR.push(i)}});
+  {const CB=[],CR=[];DAYS.forEach((d,i)=>{const v=CUR_AV?(CUR_AV[i].l||""):$("lg"+i).value;if(availOf(i).length){if(v.includes("V")&&!blk(i,"bike"))CB.push(i);if(v.includes("C")&&!blk(i,"run"))CR.push(i)}});
    const findLong=k=>{let src=-1,best=null;tpl.forEach((d,i)=>d.forEach(x=>{if(x.k===k&&!x.q&&!x.brick&&(!best||(x.w||0)>(best.w||0))){best=x;src=i}}));return [src,best]};
    const moveLong=(k,t,slotOnly)=>{if(t<0)return;const [src,best]=findLong(k);if(!best||src===t)return;
      if(!slotOnly){const a=tpl[src];tpl[src]=tpl[t];tpl[t]=a;return}
@@ -1450,9 +1452,27 @@ function build(P){
   const swimSlots=[];tpl.forEach(d=>{for(let j=d.length-1;j>=0;j--) if(d[j].k==="swim"){swimSlots.push(d[j]);d.splice(j,1)}});
   swimSlots.sort((a,b)=>(b.q?1:0)-(a.q?1:0));
   let sd=HAS("swim")?swimDays().filter(i=>availOf(i).length):[];
-  {const nsw=P.wo&&P.wo.ns&&+P.wo.ns.swim;if(HAS("swim")&&nsw){if(sd.length>nsw)sd=sd.slice(0,nsw);else{for(const i of [0,2,4,1,3,5,6]){if(sd.length>=nsw)break;if(!sd.includes(i)&&availOf(i).length)sd.push(i)}sd.sort((a,b)=>a-b)}}}
+  sd=sd.filter(i=>!blk(i,"swim"));DAYS.forEach((_,i)=>{if(onlyOf(i)==="swim"&&HAS("swim")&&availOf(i).length&&!sd.includes(i))sd.push(i)});sd.sort((a,b)=>a-b);
+  {const nsw=P.wo&&P.wo.ns&&+P.wo.ns.swim;if(HAS("swim")&&nsw){if(sd.length>nsw)sd=sd.slice(0,nsw);else{for(const i of [0,2,4,1,3,5,6]){if(sd.length>=nsw)break;if(!sd.includes(i)&&availOf(i).length&&!blk(i,"swim"))sd.push(i)}sd.sort((a,b)=>a-b)}}}
   {const n=+$("nSwim").value||0;if(n&&sd.length<n)alerts.push({c:"warn",t:ALT(`${n} séances de natation demandées mais seulement ${sd.length} jour(s) de natation possible(s) : coche d'autres jours dans les contraintes.`,`${n} swimming sessions requested but only ${sd.length} swimming day(s) possible: tick other days in the constraints.`)})}
   sd.forEach((d,i)=>{const s=swimSlots[i]||{k:"swim",pool:["N12","N21"],w:1,min:45,max:70};tpl[d].push({...s})});
+  /* jours « un seul sport » (contrainte de la semaine) : les autres séances sont déplacées ailleurs */
+  if(CUR_AV&&CUR_AV.some(a=>a&&a.o)){
+    const lost=[];const unb=y=>{if(y.brick){y.brick=0;y.pool=["C21"];y.min=Math.max(y.min,25)}};
+    const dest=(x,from)=>{let best=-1,bs=1e9;DAYS.forEach((_,j)=>{if(j===from||!availOf(j).length||blk(j,x.k))return;
+        const same=tpl[j].some(y=>y.k===x.k)?1:0,free=availOf(j).length-tpl[j].length;
+        const sc=same*10+(free>0?0:6)+Math.abs(j-from)*.3;if(sc<bs){bs=sc;best=j}});return best};
+    DAYS.forEach((_,i)=>{const o=onlyOf(i);if(!o)return;
+      for(let j=tpl[i].length-1;j>=0;j--){const x=tpl[i][j];if(x.k==="race"||x.k===o)continue;
+        tpl[i].splice(j,1);if(x.brick&&x.k==="run")unb(x);
+        if(o==="run")tpl[i].forEach(unb);
+        const t=dest(x,i);if(t>=0)tpl[t].push(x);else lost.push(`${DAYS[i]} : ${x.pool&&CAT[x.pool[0]]?CAT[x.pool[0]].n:x.k}`)}});
+    DAYS.forEach((_,i)=>{const o=onlyOf(i);if(!o||o==="swim"||!availOf(i).length||tpl[i].some(x=>x.k===o))return;
+      let src=-1,sx=null,sb=-1e9;tpl.forEach((d,j)=>{if(j===i||onlyOf(j)===o)return;d.forEach(x=>{if(x.k!==o||x.brick)return;const sc=(d.length>1?3:0)-(x.q?2:0)-((x.w||0)>=2?2:0)-Math.abs(j-i)*.2;if(sc>sb){sb=sc;src=j;sx=x}})});
+      if(sx){tpl[src].splice(tpl[src].indexOf(sx),1);tpl[i].push(sx)}
+      else tpl[i].push(o==="run"?{k:"run",pool:["C21","C24"],w:.8,min:30,max:60}:{k:"bike",pool:[i>=5?"V1":"V2"],w:i>=5?2:1,min:45,max:i>=5?180:90})});
+    if(lost.length)alerts.push({c:"warn",t:ALT(`Jour à un seul sport : séance(s) non replacée(s) faute de place : ${lost.join(" ; ")}.`,`Single-sport day: session(s) not placed for lack of room: ${lost.join("; ")}.`)});
+    {const on=CUR_AV.map((a,i)=>a&&a.o?`${{swim:ALT("natation seule","swim only"),bike:ALT("vélo seul","bike only"),run:ALT("course seule","run only")}[a.o]} ${DLC(i)}`:"").filter(Boolean);if(on.length)alerts.unshift({c:"ok",t:ALT("Un seul sport ce jour-là : ","One sport only that day: ")+on.join(", ")+"."})}}
   /* nombre de séances choisi : on retire d'abord les séances les moins importantes */
   const NS={bike:+(P.wo&&P.wo.ns&&P.wo.ns.bike)||+$("nBike").value||0,run:+(P.wo&&P.wo.ns&&P.wo.ns.run)||+$("nRun").value||0};
   if(ISRUN()&&!NS.run)NS.run=vol<4?3:vol<6?4:vol<8?5:vol<10.5?6:7;
@@ -1485,10 +1505,10 @@ function build(P){
   ["run","bike"].forEach(k=>{const n=NS[k];if(!n)return;
     const order=k==="run"?[2,4,0,3,1,6,5]:[0,2,4,1,3,6,5];let g=0;
     while(listK(k).length<n&&g++<20){
-      const okDay=i=>freeOf(i)>0&&!tpl[i].some(x=>x.k===k);
+      const okDay=i=>freeOf(i)>0&&!tpl[i].some(x=>x.k===k)&&!blk(i,k);
       let d=order.find(i=>okDay(i)&&!(k==="run"&&((tpl[i+1]||[]).some(x=>x.k==="run"&&x.q)||(tpl[i-1]||[]).some(x=>x.k==="run"&&x.q))));
       if(d===undefined)d=order.find(okDay);
-      if(d===undefined)d=order.find(i=>freeOf(i)>0);
+      if(d===undefined)d=order.find(i=>freeOf(i)>0&&!blk(i,k));
       if(d===undefined){alerts.push({c:"cap",t:ALT(`${n} séances de ${k==="run"?"course":"vélo"} demandées, ${listK(k).length} placées faute de créneau`,`${n} ${k==="run"?"run":"bike"} sessions requested, ${listK(k).length} placed for lack of slots`)});break}
       tpl[d].push(k==="run"?{k:"run",pool:["C21","C24"],w:.8,min:30,max:60}:{k:"bike",pool:[d>=5?"V1":"V2"],w:d>=5?2:1,min:45,max:d>=5?180:90});
     }
@@ -1657,7 +1677,7 @@ function build(P){
 
   /* 3. renfo : jours sans qualité de course, après une séance facile */
   const order=[3,0,4,2,1];let placed=0;
-  for(const d of order){if(placed>=nRenfo)break;if(!availOf(d).length)continue;if(slots.some(s=>s.day===d+1&&s.k==="run"&&s.q))continue;
+  for(const d of order){if(placed>=nRenfo)break;if(!availOf(d).length||onlyOf(d))continue;if(slots.some(s=>s.day===d+1&&s.k==="run"&&s.q))continue;
     week[d].push({k:"renfo",min:RM(),txt:RENFO[(placed+rot)%RENFO.length]});placed++}
 
   /* course C : elle prend la place des séances du jour et des séances de qualité autour */
@@ -3046,20 +3066,21 @@ async function icuClearWeek(L){if(!icuKey()){dlgIcu();return}
 $("icuCfg").addEventListener("click",dlgIcu);
 $("icuTutoBtn").addEventListener("click",()=>{if(document.body.classList.contains("menu"))closeMenu();window.openTuto(TUTO_ICU)});
 function dlgCons(d){const wo=WOVR[d]||{};
-  const base=DAYS.map((x,i)=>wo.av?wo.av[i]:{c:$("a"+i+"c").value,e:$("a"+i+"e").checked,r:$("a"+i+"r").checked||(wo.off||[]).includes(i),s:$("sd"+i).checked,l:$("lg"+i).value});
-  const showE=HAS("bike")&&HAS("run"),showS=HAS("swim");
+  const base=DAYS.map((x,i)=>wo.av?wo.av[i]:{c:$("a"+i+"c").value,e:$("a"+i+"e").checked,r:$("a"+i+"r").checked||(wo.off||[]).includes(i),s:$("sd"+i).checked,l:$("lg"+i).value,o:""});
+  const showE=HAS("bike")&&HAS("run"),showS=HAS("swim"),showO=["swim","bike","run"].filter(HAS).length>=2;
+  const onlyOpts=v=>[["",""],["swim",ALT("Natation seule","Swim only")],["bike",ALT("Vélo seul","Bike only")],["run",ALT("Course seule","Run only")]].filter(o=>!o[0]||HAS(o[0])).map(o=>`<option value="${o[0]}" ${o[0]===(v||"")?"selected":""}>${o[0]?o[1]:"–"}</option>`).join("");
   const lgOpts=v=>["","V","C","VC"].filter(o=>(!o.includes("V")||HAS("bike"))&&(!o.includes("C")||HAS("run"))).map(o=>`<option value="${o}" ${o===(v||"")?"selected":""}>${o?o.replace("VC","V+C"):"–"}</option>`).join("");
-  dlgOpen(`<h3>Contrainte · semaine du ${frDate(d)}</h3>
-   <p class="hint">Disponibilités de cette semaine seulement : tes réglages habituels ne changent pas.</p>
-   <table class="avail dl-av"><thead><tr><th>Jour</th><th>Créneaux</th>${showE?"<th>Ench.</th>":""}${showS?"<th>Nat.</th>":""}<th>Repos</th><th>Long.</th></tr></thead><tbody>
-   ${base.map((a,i)=>`<tr data-row="${i}" class="${a.r?"off":""}"><td>${DAYS[i].slice(0,3)}. <span class="dl-dt">${frDate(addDays(d,i))}</span></td><td><select data-f="c">${SLOTS.map(([v,l])=>`<option value="${v}" ${v===a.c?"selected":""}>${l}</option>`).join("")}</select></td>${showE?`<td><input type="checkbox" data-f="e" ${a.e?"checked":""}></td>`:""}${showS?`<td><input type="checkbox" data-f="s" ${a.s?"checked":""}></td>`:""}<td><input type="checkbox" data-f="r" ${a.r?"checked":""}></td><td><select data-f="l" class="lg">${lgOpts(a.l)}</select></td></tr>`).join("")}
-   </tbody></table>
-   <label class="dl-row">Volume de la semaine<select id="dlVol">${[[1,"Normal"],[.85,"Un peu chargée (−15 %)"],[.7,"Fatigue, déplacement (−30 %)"],[.5,"Très réduite (−50 %)"]].map(o=>`<option value="${o[0]}" ${(wo.vol||1)==o[0]?"selected":""}>${o[1]}</option>`).join("")}</select></label>
-   <label class="dl-row">Note<input id="dlNote" value="${esc(wo.note||"")}" placeholder="ex. déplacement pro, pas de piscine"></label>
-   <div class="dl-btns">${wo.av?'<button type="button" class="ghost" id="dlHab">Reprendre mes dispos habituelles</button>':""}<span style="flex:1"></span><button type="button" class="ghost" data-dclose>Annuler</button><button type="button" id="dlOk">Appliquer</button></div>`);
+  dlgOpen(`<h3>${ALT("Contrainte · semaine du","Constraint · week of")} ${frDate(d)}</h3>
+   <p class="hint">${ALT("Disponibilités de cette semaine seulement : tes réglages habituels ne changent pas.","Availability for this week only: your usual settings do not change.")}</p>
+   <table class="avail dl-av"><thead><tr><th>Jour</th><th>Créneaux</th>${showE?"<th>Ench.</th>":""}${showS?"<th>Nat.</th>":""}<th>Repos</th><th>Long.</th>${showO?`<th>${ALT("Seul.","Only")}</th>`:""}</tr></thead><tbody>
+   ${base.map((a,i)=>`<tr data-row="${i}" class="${a.r?"off":""}"><td>${DAYS[i].slice(0,3)}. <span class="dl-dt">${frDate(addDays(d,i))}</span></td><td><select data-f="c">${SLOTS.map(([v,l])=>`<option value="${v}" ${v===a.c?"selected":""}>${l}</option>`).join("")}</select></td>${showE?`<td><input type="checkbox" data-f="e" ${a.e?"checked":""}></td>`:""}${showS?`<td><input type="checkbox" data-f="s" ${a.s?"checked":""}></td>`:""}<td><input type="checkbox" data-f="r" ${a.r?"checked":""}></td><td><select data-f="l" class="lg">${lgOpts(a.l)}</select></td>${showO?`<td><select data-f="o" class="lg">${onlyOpts(a.o)}</select></td>`:""}</tr>`).join("")}
+   </tbody></table>${showO?`<p class="hint">${ALT("« Seul. » : ce jour-là, uniquement ce sport (les autres séances sont déplacées sur d'autres jours).","“Only”: that day, just that sport (other sessions are moved to other days).")}</p>`:""}
+   <label class="dl-row">${ALT("Volume de la semaine","Week volume")}<select id="dlVol">${[[1,ALT("Normal","Normal")],[.85,ALT("Un peu chargée (−15 %)","A bit busy (−15 %)")],[.7,ALT("Fatigue, déplacement (−30 %)","Tired, travelling (−30 %)")],[.5,ALT("Très réduite (−50 %)","Very reduced (−50 %)")]].map(o=>`<option value="${o[0]}" ${(wo.vol||1)==o[0]?"selected":""}>${o[1]}</option>`).join("")}</select></label>
+   <label class="dl-row">Note<input id="dlNote" value="${esc(wo.note||"")}" placeholder="${ALT("ex. déplacement pro, pas de piscine","e.g. work trip, no pool")}"></label>
+   <div class="dl-btns">${wo.av?'<button type="button" class="ghost" id="dlHab">${ALT("Reprendre mes dispos habituelles","Use my usual availability")}</button>':""}<span style="flex:1"></span><button type="button" class="ghost" data-dclose>Annuler</button><button type="button" id="dlOk">${ALT("Appliquer","Apply")}</button></div>`);
   $("dlg").querySelectorAll('[data-f="r"]').forEach(cb=>cb.addEventListener("change",()=>cb.closest("tr").classList.toggle("off",cb.checked)));
   if($("dlHab"))$("dlHab").onclick=()=>{setWo(d,{av:undefined,off:undefined});dlgClose();render()};
-  $("dlOk").onclick=()=>{const av=[...$("dlg").querySelectorAll("tr[data-row]")].map((tr,i)=>{const q=f=>tr.querySelector(`[data-f="${f}"]`);return {c:q("c").value,e:q("e")?q("e").checked:base[i].e,s:q("s")?q("s").checked:base[i].s,r:q("r").checked,l:q("l").value}});
+  $("dlOk").onclick=()=>{const av=[...$("dlg").querySelectorAll("tr[data-row]")].map((tr,i)=>{const q=f=>tr.querySelector(`[data-f="${f}"]`);return {c:q("c").value,e:q("e")?q("e").checked:base[i].e,s:q("s")?q("s").checked:base[i].s,r:q("r").checked,l:q("l").value,o:q("o")?q("o").value:""}});
     setWo(d,{av,off:undefined,vol:+$("dlVol").value===1?undefined:+$("dlVol").value,note:$("dlNote").value.trim()||undefined});dlgClose();render()}}
 function dlgVol(d){const wo=WOVR[d]||{},R=(window.__all||[]).find(R=>R.P.date===d),cur=wo.km||(R?R.P.km:sliderKm()),ns=wo.ns||{};
   const cnt=k=>R?R.week.flat().filter(s=>s.k===k&&!s.brick).length:0;
