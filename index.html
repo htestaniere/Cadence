@@ -115,7 +115,7 @@ main{display:flex;flex-direction:column;gap:16px;min-width:0}
 .syncbox{border:1px solid var(--line,#ccc);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px}.syncbox[hidden],#syncOff[hidden],#syncOn[hidden],#syncJoinRow[hidden]{display:none}.syncbox code{font:600 15px/1.3 ui-monospace,Menlo,monospace;letter-spacing:.5px;user-select:all;word-break:break-all}#syncOff,#syncOn{display:flex;flex-direction:column;gap:6px}#syncJoinRow{display:flex;gap:6px}#syncJoinRow input{flex:1;min-width:0;font:inherit;padding:8px;box-sizing:border-box}
 .extra{margin-top:16px;padding:12px;border:1px solid var(--line,#ccc);border-radius:12px}.extra-h{margin:0 0 4px}.extra-c{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.exc{padding:8px 14px;border-radius:999px;border:1px solid currentColor;background:transparent;color:inherit;font-weight:600;cursor:pointer}.exc[aria-pressed="true"]{background:var(--accent,#e1001a);border-color:var(--accent,#e1001a);color:#fff}
 .ovc[data-mv]{cursor:grab;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.ovc.dragging{opacity:.3}.ovghost{position:fixed;z-index:300;pointer-events:none;margin:0;box-shadow:0 8px 24px rgba(0,0,0,.28);transform:rotate(2deg);opacity:.95}.ovd.dropt{outline:2px dashed var(--accent);outline-offset:2px;border-radius:8px;background:color-mix(in srgb,var(--accent) 8%,transparent)}body.dnd{cursor:grabbing;-webkit-user-select:none;user-select:none}
-.alerts{display:flex;flex-direction:column;gap:6px}
+.bil h3{margin:0 0 4px}.bil-t{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.bil-t>div{background:color-mix(in srgb,var(--ink) 5%,var(--panel));border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:1px}.bil-t span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.bil-t b{font-family:var(--display,inherit);font-size:20px;font-style:italic}.bil-t small{font-size:11px;color:var(--muted)}.bil-say{margin:8px 0 4px 18px;padding:0;font-size:14px}.bil-nxt{font-size:14px;margin:4px 0 8px}.bil-tb{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}.bil-tb th{text-align:left;font-size:11px;color:var(--muted);text-transform:uppercase;padding:3px 6px 3px 0}.bil-tb td{padding:5px 6px 5px 0;border-top:1px solid var(--line)}.bil-n{color:var(--muted);font-size:12px}.bil-s{font-weight:600;white-space:nowrap}.bil-s.ok{color:var(--ok)}.bil-s.warn{color:var(--warn)}.bil-s.bad{color:var(--bad)}.bil-s.mut{color:var(--muted)}@media(max-width:480px){.bil-t{grid-template-columns:repeat(2,1fr)}}.alerts{display:flex;flex-direction:column;gap:6px}.amsg{border:1px solid var(--line);border-radius:10px;background:var(--panel)}.amsg summary{display:flex;align-items:center;gap:8px;cursor:pointer;padding:9px 12px;font-weight:600;font-size:14px;list-style:none}.amsg summary::-webkit-details-marker{display:none}.amsg summary::after{content:"▾";margin-left:auto;opacity:.6;transition:transform .15s}.amsg[open] summary::after{transform:rotate(180deg)}.amsg .cnt{min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:#fff;background:var(--ok);padding:0 6px}.amsg .cnt.warn{background:var(--warn)}.amsg .cnt.bad{background:var(--bad)}.amsg-b{display:flex;flex-direction:column;gap:6px;padding:0 8px 8px}
 .alert{border-left:4px solid var(--warn);background:var(--panel);border-radius:6px;padding:8px 12px;font-size:14px}
 .alert.bad{border-color:var(--bad)}
 .alert.ok{border-color:var(--ok)}
@@ -168,7 +168,7 @@ input[type=date]{font:inherit;font-size:14px;padding:4px 6px;border:1px solid va
 .bw .km{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 .bw .ld{font-size:12.5px;font-variant-numeric:tabular-nums}
 .bchart{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
-.bchart svg{width:100%;height:120px;display:block}
+.bchart svg{width:100%;height:120px;display:block}.bchart .bhit:hover{fill:rgba(128,128,128,.12)}
 .tss{font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap}
 
 .ov-title{font-size:20px;color:var(--accent);margin:4px 0 -4px}
@@ -178,7 +178,7 @@ input[type=date]{font:inherit;font-size:14px;padding:4px 6px;border:1px solid va
 .ov{display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));gap:8px;overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px}
 .ovd{display:flex;flex-direction:column;gap:6px;min-width:0}
 .ovd h3{font-size:16px;display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--line);padding-bottom:3px}
-.ovd h3 span{font-family:var(--body);font-size:12px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+.ovd h3 .dn{font-weight:inherit}.ovd h3 em{font-style:normal;font-family:var(--body);font-size:11px;color:var(--muted);font-weight:600;margin-left:2px}.ovd h3 span{font-family:var(--body);font-size:12px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
 .ovm{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin-top:2px}
 .ovc{border-left:3px solid var(--c);background:var(--chip);border-radius:5px;padding:4px 6px;display:flex;flex-direction:column;gap:2px;font-size:12px;line-height:1.25}
 .ovc .l1{display:flex;justify-content:space-between;gap:4px;font-weight:600}
@@ -347,7 +347,7 @@ body.menu{overflow:hidden}
 .bvol .v-bike{color:var(--bike)}.bvol .v-bike i{background:var(--bike)}
 .bvol .v-run{color:var(--run)}.bvol .v-run i{background:var(--run)}
 .bcards{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(170px,1fr);gap:8px;overflow-x:auto;padding-bottom:4px}
-.bw.now{background:color-mix(in srgb,var(--accent) 7%,var(--panel))}
+.bw.past{background:color-mix(in srgb,var(--ink) 9%,var(--panel))}.bw.past .t1,.bw.past .t1 span{opacity:.8}#ov.past{background:color-mix(in srgb,var(--ink) 7%,var(--panel));border-radius:12px}.bw.now{background:color-mix(in srgb,var(--accent) 7%,var(--panel))}
 .bw.now .t1 span{color:var(--accent);font-weight:700}
 .bw.tw{border-top:3px solid var(--accent)}
 .tpill{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:var(--accent);color:var(--bg);border-radius:4px;padding:0 5px;vertical-align:1px}
@@ -1695,6 +1695,9 @@ function build(P){
     if((kd==="SB"||kd==="SBR")&&HAS("swim")){const own=d.find(s=>s.k==="swim"&&!s.fc);if(own)own.fs=1;else d.push({k:"swim",code:"N5",item:CAT.N5,min:o.sm||30,q:false,fc:1,npool:1,ov:0,adj:null})}
     if((kd==="RB"||kd==="RBR")&&HAS("run")){const own=d.find(s=>s.k==="run"&&!s.fc&&!s.brick);if(own)own.ff=1}
     if((kd==="BR"||kd==="SBR"||kd==="RBR")&&HAS("run")&&!d.some(s=>s.k==="run"&&s.brick)&&!d.some(s=>s.fc&&s.k==="run")){const code=o.rt==="q"?"CBq":"CBe";d.push({k:"run",code,item:CAT[code],min:o.rm||20,q:false,fc:1,npool:1,ov:0,adj:null})}})}
+  /* filet de sécurité : jour « un seul sport » → rien d'autre ne reste (enchaînements manuels, séances forcées…) */
+  {const gone=[];week.forEach((d,i)=>{const o=onlyOf(i);if(!o)return;const keep=d.filter(s=>s.k===o||s.k==="race");if(keep.length!==d.length){d.filter(s=>!keep.includes(s)).forEach(s=>gone.push(DLC(i)+" : "+s.k));week[i]=keep}});
+   if(gone.length)alerts.push({c:"warn",t:ALT(`Jour à un seul sport : séance(s) retirée(s) (${gone.join(" ; ")}).`,`Single-sport day: session(s) removed (${gone.join("; ")}).`)})}
   week.forEach((d,i)=>assignMoments(d,i));
 
   /* 4. contrôles */
@@ -2137,7 +2140,7 @@ function overviewHTML(R){
   const c=R.c;
   return R.week.map((d,i)=>{
     const dm=d.reduce((a,s)=>a+s.min,0);
-    if(!d.length) return `<div class="ovd" data-day="${i}"><h3>${DAYS[i].slice(0,3)}.<span>–</span></h3><div class="ovr">Repos</div></div>`;
+    if(!d.length) return `<div class="ovd" data-day="${i}"><h3><b class="dn">${DAYS[i].slice(0,3)}. <em>${frDate(addDays(R.P.date,i))}</em></b><span>–</span></h3><div class="ovr">Repos</div></div>`;
     const chip=s=>{
       if(s.k==="race") return `<div class="ovc"${s._mv&&!VIEW&&!LOCKED?' data-mv="1"':""} data-sk="${s._k}" tabindex="0" role="button" style="--c:var(--accent)"><div class="l1"><b><span class="spb">Course</span></b></div><div class="l2">${s.name?esc(s.name):"Jour de course"}</div></div>`;
       if(s.k==="renfo") return `<div class="ovc"${s._mv&&!VIEW&&!LOCKED?' data-mv="1"':""} data-sk="${s._k}" tabindex="0" role="button" style="--c:var(--renfo)"><div class="l1"><b><span class="spb">Renfo</span></b><span>${hm(s.min)}</span></div><div class="l2">Renfo</div></div>`;
@@ -2156,7 +2159,7 @@ function overviewHTML(R){
       if(inBrick&&s.chain){html+="</div>";inBrick=false}
     });
     if(inBrick) html+="</div>";
-    return `<div class="ovd" data-day="${i}"><h3>${DAYS[i].slice(0,3)}.<span>${hm(dm)}</span></h3>${html}</div>`;
+    return `<div class="ovd" data-day="${i}"><h3><b class="dn">${DAYS[i].slice(0,3)}. <em>${frDate(addDays(R.P.date,i))}</em></b><span>${hm(dm)}</span></h3>${html}</div>`;
   }).join("");
 }
 
@@ -2327,7 +2330,7 @@ function guards(R){
 }
 
 /* ---------- calcul de toutes les semaines ---------- */
-let SEL=0,LASTAUTO="";
+let SEL=0,LASTAUTO="",AMSG_OPEN=false;
 function computeWeeks(){
   const Ps=weekParams(),Rs=[];let ctl=+$("ctl0").value||0,atl=+$("atl0").value||0;
   Ps.forEach((P,i)=>{
@@ -2386,13 +2389,15 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-cap]");if(
   const v=+b.dataset.v,el=$("volTarget");el.value=v;el.dispatchEvent(new Event("input",{bubbles:true}));if(typeof save==="function")save();gToast(`Semaine de base passée à ${hm(v*60)}.`)});
 function blocHTML(Rs){
   const cards=Rs.map((R,k)=>{const A=R.A,tot=A.tot.swim+A.tot.bike+A.tot.run+A.tot.renfo;
-    return `<button type="button" class="bw${R.P.test?" tw":""}${R.P.date===mondayOf(todayISO())?" now":""}" data-sel="${k}" aria-pressed="${k===SEL}"><div class="t1">S${k+1}<span>${R.P.date===mondayOf(todayISO())?"cette semaine":frDate(R.P.date)}</span></div><div class="typ">${TYPELAB[R.type]}${R.P.test?' <span class="tpill">tests</span>':""}${R.P.wo?' <span class="mpill" title="Semaine modifiée à la main">modifiée</span>':""}</div><span class="bw-more" data-more="${k}" role="button" aria-label="Options de la semaine">⋯</span>${R.P.label&&R.P.label.startsWith("S-")?`<div class="km">${esc(R.P.label.split(" : ")[0])}</div>`:""}<div class="ld"><b>${hm(tot)}</b> · ${A.tss} TSS</div><div class="bvol">${[HAS("swim")?`<span class="v-swim"><i></i>Nat. ${unitOf("swim")==="h"?`<b>${hm(A.tot.swim)}</b><em>${fr(A.swimK.toFixed(1))} km</em>`:`<b>${fr(A.swimK.toFixed(1))} km</b><em>${hm(A.tot.swim)}</em>`}</span>`:"",HAS("bike")?`<span class="v-bike"><i></i>Vélo ${unitOf("bike")==="h"?`<b>${hm(A.tot.bike)}</b><em>${Math.round(A.bikeK)} km</em>`:`<b>${Math.round(A.bikeK)} km</b><em>${hm(A.tot.bike)}</em>`}</span>`:"",HAS("run")?`<span class="v-run"><i></i>CAP ${unitOf("run")==="h"?`<b>${hm(A.tot.run)}</b><em>${Math.round(A.runK)} km</em>`:`<b>${Math.round(A.runK)} km</b><em>${hm(A.tot.run)}</em>`}</span>`:""].join("")}</div>${R.guards.length?'<div class="km" style="color:var(--bad)">garde-fou à vérifier</div>':""}</button>`}).join("");
+    return `<button type="button" class="bw${R.P.test?" tw":""}${R.P.date===mondayOf(todayISO())?" now":""}${addDays(R.P.date,6)<todayISO()?" past":""}" data-sel="${k}" aria-pressed="${k===SEL}"><div class="t1">S${k+1}<span>${R.P.date===mondayOf(todayISO())?"cette semaine":frDate(R.P.date)}</span></div><div class="typ">${TYPELAB[R.type]}${R.P.test?' <span class="tpill">tests</span>':""}${R.P.wo?' <span class="mpill" title="Semaine modifiée à la main">modifiée</span>':""}</div><span class="bw-more" data-more="${k}" role="button" aria-label="Options de la semaine">⋯</span>${R.P.label&&R.P.label.startsWith("S-")?`<div class="km">${esc(R.P.label.split(" : ")[0])}</div>`:""}<div class="ld"><b>${hm(tot)}</b> · ${A.tss} TSS</div><div class="bvol">${[HAS("swim")?`<span class="v-swim"><i></i>Nat. ${unitOf("swim")==="h"?`<b>${hm(A.tot.swim)}</b><em>${fr(A.swimK.toFixed(1))} km</em>`:`<b>${fr(A.swimK.toFixed(1))} km</b><em>${hm(A.tot.swim)}</em>`}</span>`:"",HAS("bike")?`<span class="v-bike"><i></i>Vélo ${unitOf("bike")==="h"?`<b>${hm(A.tot.bike)}</b><em>${Math.round(A.bikeK)} km</em>`:`<b>${Math.round(A.bikeK)} km</b><em>${hm(A.tot.bike)}</em>`}</span>`:"",HAS("run")?`<span class="v-run"><i></i>CAP ${unitOf("run")==="h"?`<b>${hm(A.tot.run)}</b><em>${Math.round(A.runK)} km</em>`:`<b>${Math.round(A.runK)} km</b><em>${hm(A.tot.run)}</em>`}</span>`:""].join("")}</div>${R.guards.length?'<div class="km" style="color:var(--bad)">garde-fou à vérifier</div>':""}</button>`}).join("");
   const n=Rs.length,pad=22,step=Math.max(34,Math.min(70,900/n)),W=Math.max(320,pad*2+n*step),H=140,bw=step*.62,mx=Math.max(...Rs.map(R=>{const t=R.A.tot;return (t.swim+t.bike+t.run)/60}),1);
   const ctls=Rs.map(R=>R.ctl1),cmin=Math.min(...ctls,Rs[0].ctl0)-3,cmax=Math.max(...ctls,Rs[0].ctl0)+3;
   const x=k=>pad+k*step+(step-bw)/2, yc=v=>H-18-((v-cmin)/(cmax-cmin))*(H-40);
   let bars="",pts=[];
   Rs.forEach((R,k)=>{const t=R.A.tot;let base=H-18;[["swim","var(--swim)"],["bike","var(--bike)"],["run","var(--run)"]].forEach(([kk,col])=>{const hh=(t[kk]/60/mx)*(H-40);bars+=`<rect x="${x(k).toFixed(1)}" y="${(base-hh).toFixed(1)}" width="${bw.toFixed(1)}" height="${hh.toFixed(1)}" fill="${col}" opacity="${k===SEL?1:.75}"/>`;base-=hh});
+    if(addDays(R.P.date,6)<todayISO())bars=`<rect x="${(x(k)-3).toFixed(1)}" y="14" width="${(bw+6).toFixed(1)}" height="${H-30}" rx="4" fill="var(--ink)" opacity=".07"/>`+bars;
     const isNow=R.P.date===mondayOf(todayISO());if(isNow)bars=`<rect x="${(x(k)-3).toFixed(1)}" y="14" width="${(bw+6).toFixed(1)}" height="${H-30}" rx="4" fill="var(--accent)" opacity=".08"/>`+bars;
+    bars+=`<rect class="bhit" data-sel="${k}" x="${(x(k)-3).toFixed(1)}" y="0" width="${(bw+6).toFixed(1)}" height="${H}" fill="transparent" style="cursor:pointer"><title>S${k+1} · ${frDate(R.P.date)}</title></rect>`;
     bars+=`<text x="${(x(k)+bw/2).toFixed(1)}" y="${H-5}" text-anchor="middle" font-size="10" ${isNow?'font-weight="700" fill="var(--accent)"':'fill="var(--muted)"'}>S${k+1}</text>`;
     if(R.P.test)bars+=`<text x="${(x(k)+bw/2).toFixed(1)}" y="11" text-anchor="middle" font-size="9" font-weight="700" fill="var(--accent)">TEST</text>`;
     const rc=RACES.find(r=>r.t==="C"&&r.d>=R.P.date&&r.d<=addDays(R.P.date,6));
@@ -2439,7 +2444,9 @@ function render(){
    <div class="tile"><span class="k">Part en Z1–Z2</span><span class="v" style="color:${endur>=ZT[0]-3&&endur<=ZT[1]+5?"var(--ok)":"var(--warn)"}">≈ ${endur} %</span><span class="s">visée ${ZT[0]}–${ZT[1]} % (${ZT[2]})</span></div>`;
 
   {const all=[...extraAlerts(R),...R.alerts],cp=all.filter(a=>a.c==="cap"),rest=all.filter(a=>a.c!=="cap");
-   $("alerts").innerHTML=(cp.length?capHTML(R,cp):"")+rest.map(a=>`<div class="alert ${a.c}">${a.t}</div>`).join("")}
+   const sev=rest.some(a=>a.c==="bad")?"bad":rest.some(a=>a.c==="warn")?"warn":"ok";
+   $("alerts").innerHTML=(cp.length?capHTML(R,cp):"")+(rest.length?`<details class="amsg" id="amsg"${AMSG_OPEN?" open":""}><summary><span>${ALT("Messages","Messages")}</span><b class="cnt ${sev}">${rest.length}</b></summary><div class="amsg-b">${rest.map(a=>`<div class="alert ${a.c}">${a.t}</div>`).join("")}</div></details>`:"");
+   const am=$("amsg");if(am)am.addEventListener("toggle",()=>{AMSG_OPEN=am.open})}
 
   R.week.forEach((d,i)=>d.forEach((s,k)=>s._k=i+":"+k));
   $("week").innerHTML=R.week.map((d,i)=>{
@@ -2463,6 +2470,7 @@ function render(){
   $("blocWrap").hidden=Rs.length<2;
   if(Rs.length>1){const a=nextRaceA(Rs[0].P.date),nt=Rs.filter(R=>R.P.test).length;$("blocTitle").textContent=`Préparation · ${Rs.length} semaines du ${frDate(Rs[0].P.date)} au ${frDate(addDays(Rs[Rs.length-1].P.date,6))}${nt?` · ${nt} semaine${nt>1?"s":""} test`:""}`}
   if(Rs.length>1) $("bloc").innerHTML=blocHTML(Rs);
+  $("ov").classList.toggle("past",addDays(R.P.date,6)<todayISO());
   $("ovTitle").textContent=`Vue d'ensemble · ${R.P.date===mondayOf(todayISO())?"cette semaine ("+frDate(R.P.date)+")":"semaine du "+frDate(R.P.date)}${Rs.length>1?` (S${SEL+1})`:""} · ${TYPELAB[R.type]}`;
   window.__all=Rs;
   window.__last=R;save();
@@ -2642,7 +2650,7 @@ $("nSwim").addEventListener("change",()=>{setSwimN();render()});
 $("mode").addEventListener("change",()=>{SEL=0;syncMode();render()});
 $("autoType").addEventListener("change",()=>{LASTAUTO="";SEL=0;syncMode();render()});
 $("wdate").addEventListener("change",()=>{LASTAUTO="";syncMode();render()});
-$("bloc").addEventListener("click",e=>{const b=e.target.closest(".bw");if(!b)return;SEL=+b.dataset.sel;render()});
+$("bloc").addEventListener("click",e=>{const b=e.target.closest(".bw,.bhit");if(!b)return;SEL=+b.dataset.sel;OSEL=null;render()});
 $("races").addEventListener("change",e=>{const el=e.target;if(el.dataset.k===undefined)return;RACES[+el.dataset.k][el.dataset.f]=el.value;saveRaces();if(el.dataset.f==="s")renderRaces();LASTAUTO="";syncMode();render()});
 $("races").addEventListener("click",e=>{const b=e.target.closest("[data-del]");if(!b)return;RACES.splice(+b.dataset.del,1);saveRaces();renderRaces();LASTAUTO="";render()});
 $("addRace").addEventListener("click",()=>{RACES.push({d:addDays(mondayOf($("wdate").value||todayISO()),RACES.length?62:120),n:"Ma course",t:RACES.some(r=>r.t==="A")?"B":"A",f:"M",s:SPORT});saveRaces();renderRaces();render()});
@@ -2915,6 +2923,7 @@ function ctxOpen(x,y,date){
    <button type="button" role="menuitem" data-cact="vol">Modifier le volume…</button>
    <button type="button" role="menuitem" data-cact="cons">Ajouter une contrainte…</button>
    <button type="button" role="menuitem" data-cact="race">Ajouter une course…</button>
+   <button type="button" role="menuitem" data-cact="bilan">${ALT("Bilan de la semaine (intervals.icu)","Week report (intervals.icu)")}</button>
    ${R?`<button type="button" role="menuitem" data-cact="icu">Envoyer la semaine vers intervals.icu</button><button type="button" role="menuitem" data-cact="icuoff">Retirer la semaine d'intervals.icu</button>`:""}
    ${(window.__all||[]).length>1?`<button type="button" role="menuitem" data-cact="show">Afficher cette semaine</button>`:""}
    ${WOVR[date]?`<button type="button" role="menuitem" data-cact="reset" class="ctx-reset">Rétablir la semaine calculée</button>`:""}`;
@@ -2945,6 +2954,7 @@ $("ctxMenu").addEventListener("click",e=>{
   else if(act==="vol")dlgVol(d);
   else if(act==="race")dlgRace(d);
   else if(act==="icu"){const R=(window.__all||[]).find(R=>R.P.date===d);if(R)icuSendWeek(R)}
+  else if(act==="bilan")icuBilan(d);
   else if(act==="icuoff"){const R=(window.__all||[]).find(R=>R.P.date===d);if(R)icuClearWeek(R)}
 });
 function dlgOpen(html){$("dlg").innerHTML=html;$("dlgBg").hidden=false;const f=$("dlg").querySelector("input,select,button");if(f)f.focus()}
@@ -3026,6 +3036,81 @@ function icuEvents(L){const c=L.c,t0=todayISO(),T={matin:"07:30",midi:"12:30",so
       if(txt){const lines=txt.split("\n");e.name=lines[0];e.description=lines.slice(1).join("\n").trim()}else e.name=tr(s.item.n);
       ev.push(e)})});
   return {ev,skipped}}
+/* ---------- bilan de la semaine (intervals.icu) ---------- */
+const ICU_SPORT=t=>/swim/i.test(t||"")?"swim":/run/i.test(t||"")?"run":/ride|cycl|bike/i.test(t||"")?"bike":/weight|strength|workout|yoga|crossfit|pilates/i.test(t||"")?"renfo":"other";
+const BIL_LAB=()=>({swim:ALT("Natation","Swim"),bike:ALT("Vélo","Bike"),run:ALT("Course","Run"),renfo:ALT("Renfo","Strength"),other:ALT("Autre","Other")});
+function bilZ(a){let z12=0,tot=0;const zt=a.icu_zone_times;
+  if(Array.isArray(zt)&&zt.length&&typeof zt[0]==="object"){zt.filter(z=>/^Z\d/.test(z.id||"")).forEach(z=>{tot+=z.secs||0;if(/^Z[12]$/.test(z.id))z12+=z.secs||0})}
+  else{const h=a.icu_hr_zone_times;if(Array.isArray(h)&&h.length&&typeof h[0]==="number")h.forEach((s,i)=>{tot+=s||0;if(i<2)z12+=s||0})}
+  return [z12,tot]}
+async function icuBilan(date){
+  if(!icuKey()){dlgIcu();return}
+  const end=addDays(date,6),dI=d=>Math.round((parseISO(d)-parseISO(date))/864e5);
+  gToast(ALT("Lecture d'intervals.icu…","Reading intervals.icu…"));
+  let acts,evs;
+  try{[acts,evs]=await Promise.all([icuCall(`/activities?oldest=${date}&newest=${end}`,{method:"GET"}),icuCall(`/events?oldest=${date}&newest=${end}&category=WORKOUT`,{method:"GET"})])}
+  catch(e){const m=String(e&&e.message||e);if(/^HTTP 40[13]/.test(m)){dlgIcu();$("icuMsg").textContent=icuExplain(e)}else gToast(icuExplain(e));return}
+  let ctl0=null,ctl1=null;
+  try{const wl=await icuCall(`/wellness?oldest=${addDays(date,-1)}&newest=${end}`,{method:"GET"});
+    if(Array.isArray(wl)){const ok=wl.filter(x=>x&&typeof x.ctl==="number").sort((a,b)=>String(a.id).localeCompare(String(b.id)));if(ok.length){ctl0=ok[0].ctl;ctl1=ok[ok.length-1].ctl;if(ok.length<2)ctl0=null}}}catch(e){}
+  acts=(Array.isArray(acts)?acts:[]).filter(a=>a&&a.moving_time>0&&String(a.start_date_local||"").slice(0,10)>=date&&String(a.start_date_local).slice(0,10)<=end).map(a=>({a,k:ICU_SPORT(a.type),day:dI(String(a.start_date_local).slice(0,10)),min:a.moving_time/60,used:false}));
+  evs=(Array.isArray(evs)?evs:[]).filter(e=>e&&e.start_date_local);
+  const mine=evs.filter(e=>typeof e.external_id==="string"&&e.external_id.startsWith("cadence-"));
+  let plan=(mine.length?mine:evs).map(e=>({day:dI(String(e.start_date_local).slice(0,10)),k:ICU_SPORT(e.type),min:(e.moving_time||0)/60,name:e.name||"",pid:e.paired_activity_id,act:null,st:""})).filter(p=>p.day>=0&&p.day<7&&p.k!=="other");
+  let src=mine.length||evs.length?"icu":"";
+  const Rw=(window.__all||[]).find(R=>R.P.date===date);
+  if(!plan.length&&Rw){src="app";plan=[];Rw.week.forEach((d,i)=>d.forEach(s=>{if(s.k==="race")return;plan.push({day:i,k:s.k,min:s.min||0,name:s.item&&s.item.n?tr(s.item.n):(s.code||""),act:null,st:""})}))}
+  const t0=todayISO();
+  /* appariement : lien intervals.icu, puis même jour + même sport, puis jour voisin */
+  const take=(p,c,mv)=>{p.act=c;c.used=true;p.mv=mv};
+  plan.forEach(p=>{if(p.pid){const c=acts.find(c=>!c.used&&String(c.a.id)===String(p.pid));if(c)take(p,c,c.day!==p.day)}});
+  [0,1].forEach(far=>plan.forEach(p=>{if(p.act)return;const c=acts.filter(c=>!c.used&&c.k===p.k&&(far?Math.abs(c.day-p.day)===1:c.day===p.day)).sort((a,b)=>Math.abs(a.min-p.min)-Math.abs(b.min-p.min))[0];if(c)take(p,c,!!far)}));
+  plan.forEach(p=>{const date_=addDays(date,p.day);
+    if(!p.act)p.st=date_>t0?"later":(date_===t0?"today":"miss");
+    else{const r=p.min>0?p.act.min/p.min:1;p.st=r>=.8?"ok":r>=.4?"part":"short"}});
+  const L=BIL_LAB(),sp=["swim","bike","run","renfo"],S={};sp.forEach(k=>S[k]={pl:0,dn:0,km:0,n:0});
+  plan.forEach(p=>{if(S[p.k])S[p.k].pl+=p.min});
+  let tss=0,z12=0,zt=0;
+  acts.forEach(c=>{if(S[c.k]){S[c.k].dn+=c.min;S[c.k].n++;S[c.k].km+=(c.a.distance||0)/1000}tss+=c.a.icu_training_load||0;if(c.k!=="renfo"&&c.k!=="other"){const [a,b]=bilZ(c.a);z12+=a;zt+=b}});
+  const plTot=sp.reduce((a,k)=>a+S[k].pl,0),dnTot=sp.reduce((a,k)=>a+S[k].dn,0);
+  const due=plan.filter(p=>p.st!=="later"&&p.st!=="today"),nOk=due.filter(p=>p.st==="ok"||p.st==="part"||p.st==="short").length,nMiss=due.filter(p=>p.st==="miss").length;
+  const pz=zt>600?Math.round(100*z12/zt):null;
+  /* lecture de la semaine */
+  const say=[],nxt=[];
+  if(!acts.length)say.push(ALT("Aucune activité enregistrée sur intervals.icu cette semaine-là.","No activity recorded on intervals.icu that week."));
+  else{
+    if(plan.length&&due.length){const ad=Math.round(100*nOk/due.length);
+      if(ad>=85)say.push(ALT(`Semaine tenue : ${nOk} séance${nOk>1?"s":""} sur ${due.length} réalisée${nOk>1?"s":""}.`,`Solid week: ${nOk} of ${due.length} sessions done.`));
+      else if(ad>=60)say.push(ALT(`Semaine correcte : ${nOk} séance${nOk>1?"s":""} sur ${due.length}.`,`Decent week: ${nOk} of ${due.length} sessions.`));
+      else say.push(ALT(`Semaine incomplète : ${nOk} séance${nOk>1?"s":""} sur ${due.length}.`,`Incomplete week: ${nOk} of ${due.length} sessions.`))}
+    if(plTot>0&&due.length===plan.length){const r=dnTot/plTot;
+      if(r>1.15){say.push(ALT(`Volume ${Math.round((r-1)*100)} % au-dessus du plan.`,`Volume ${Math.round((r-1)*100)}% above plan.`));nxt.push(ALT("Si tu te sens fatigué, passe la semaine suivante en « Allégée ».","If you feel tired, set next week to “Easy”."))}
+      else if(r<.75){say.push(ALT(`Volume ${Math.round((1-r)*100)} % sous le plan.`,`Volume ${Math.round((1-r)*100)}% below plan.`));nxt.push(ALT("Ne rattrape pas les séances manquées : reprends la semaine suivante telle que prévue.","Don't make up missed sessions: resume next week as planned."))}
+      else say.push(ALT("Volume conforme au plan.","Volume on plan."))}
+    {const ms=plan.filter(p=>p.st==="miss");if(ms.length)say.push(ALT("Manquée"+(ms.length>1?"s":"")+" : "+ms.map(p=>L[p.k].toLowerCase()+" "+DLC(p.day).slice(0,3)+".").join(", "),"Missed: "+ms.map(p=>L[p.k].toLowerCase()+" "+DLC(p.day).slice(0,3)+".").join(", ")))}
+    sp.forEach(k=>{const s=S[k];if(k!=="renfo"&&s.pl>0&&due.length===plan.length&&s.dn<.6*s.pl)say.push(ALT(`${L[k]} en retrait (${hm(s.dn)} pour ${hm(s.pl)} prévues).`,`${L[k]} short (${hm(s.dn)} of ${hm(s.pl)} planned).`))});
+    if(pz!==null){if(pz<75){say.push(ALT(`Seulement ${pz} % du temps en Z1–Z2 : trop d'intensité.`,`Only ${pz}% of time in Z1–Z2: too much intensity.`));nxt.push(ALT("Garde les sorties faciles vraiment faciles (Z1–Z2).","Keep easy sessions truly easy (Z1–Z2)."))}
+      else say.push(ALT(`${pz} % du temps en Z1–Z2.`,`${pz}% of time in Z1–Z2.`))}
+    if(ctl0!==null&&ctl1!==null){const d=ctl1-ctl0;if(d>8){say.push(ALT(`CTL ${Math.round(ctl0)} → ${Math.round(ctl1)} (+${d.toFixed(1)}) : montée rapide.`,`CTL ${Math.round(ctl0)} → ${Math.round(ctl1)} (+${d.toFixed(1)}): fast rise.`));nxt.push(ALT("Prévois une semaine de récupération dans les deux prochaines.","Plan a recovery week within the next two."))}
+      else say.push(ALT(`CTL ${Math.round(ctl0)} → ${Math.round(ctl1)} (${d>=0?"+":""}${d.toFixed(1)}).`,`CTL ${Math.round(ctl0)} → ${Math.round(ctl1)} (${d>=0?"+":""}${d.toFixed(1)}).`))}
+    if(!nxt.length)nxt.push(ALT("Rien à corriger : enchaîne sur la semaine suivante.","Nothing to fix: carry on with next week."))}
+  const stLab={ok:["✓",ALT("Fait","Done"),"ok"],part:["◐",ALT("Partiel","Partial"),"warn"],short:["◔",ALT("Écourté","Cut short"),"warn"],miss:["✕",ALT("Manquée","Missed"),"bad"],later:["·",ALT("À venir","Upcoming"),"mut"],today:["·",ALT("Aujourd'hui","Today"),"mut"]};
+  const rows=[];
+  plan.sort((a,b)=>a.day-b.day).forEach(p=>{const s=stLab[p.st];rows.push(`<tr><td>${DLC(p.day).slice(0,3)}.</td><td>${L[p.k]}${p.name?` <span class="bil-n">${esc(p.name)}</span>`:""}</td><td>${hm(p.min)}</td><td>${p.act?hm(p.act.min)+(p.mv?` <span class="bil-n">(${DLC(p.act.day).slice(0,3)}.)</span>`:""):"–"}</td><td><span class="bil-s ${s[2]}">${s[0]} ${s[1]}</span></td></tr>`)});
+  acts.filter(c=>!c.used&&c.k!=="other").sort((a,b)=>a.day-b.day).forEach(c=>rows.push(`<tr><td>${DLC(c.day).slice(0,3)}.</td><td>${L[c.k]} <span class="bil-n">${esc(c.a.name||"")}</span></td><td>–</td><td>${hm(c.min)}</td><td><span class="bil-s mut">+ ${ALT("Non prévue","Unplanned")}</span></td></tr>`));
+  const km=k=>S[k].km>0?` · ${Math.round(S[k].km)} km`:"";
+  const rowsS=sp.filter(k=>S[k].pl>0||S[k].dn>0).map(k=>`<tr><td>${L[k]}</td><td>${S[k].pl?hm(S[k].pl):"–"}</td><td>${hm(S[k].dn)}${k==="renfo"?"":km(k)}</td></tr>`).join("");
+  const title=ALT(`Bilan · semaine du ${frDate(date)} au ${frDate(end)}`,`Report · week of ${frDate(date)} to ${frDate(end)}`);
+  const txt=[title,"",...say,"",ALT("Pour la suite : ","Next: ")+nxt.join(" ")].join("\n");
+  dlgOpen(`<div class="bil"><h3>${title}</h3>
+   <div class="bil-t"><div><span>${ALT("Réalisé","Done")}</span><b>${hm(dnTot)}</b><small>${ALT("prévu","planned")} ${hm(plTot)}</small></div><div><span>${ALT("Séances","Sessions")}</span><b>${nOk}/${due.length||acts.length}</b><small>${nMiss?nMiss+" "+ALT("manquée"+(nMiss>1?"s":""),"missed"):ALT("aucune manquée","none missed")}</small></div><div><span>${ALT("Charge","Load")}</span><b>${Math.round(tss)} TSS</b><small>${ctl0!==null?`CTL ${Math.round(ctl0)} → ${Math.round(ctl1)}`:""}</small></div><div><span>Z1–Z2</span><b>${pz!==null?pz+" %":"–"}</b><small>${ALT("visé 85–92 %","target 85–92%")}</small></div></div>
+   ${src==="app"?`<p class="hint">${ALT("Aucune séance Cadence trouvée sur intervals.icu cette semaine-là : comparaison avec le plan de l'app.","No Cadence session found on intervals.icu that week: compared with the app's plan.")}</p>`:""}
+   ${say.length?`<ul class="bil-say">${say.map(x=>`<li>${x}</li>`).join("")}</ul><p class="bil-nxt"><b>${ALT("Pour la suite","Next")}</b> · ${nxt.join(" ")}</p>`:""}
+   ${rowsS?`<table class="bil-tb"><thead><tr><th>${ALT("Sport","Sport")}</th><th>${ALT("Prévu","Plan")}</th><th>${ALT("Réalisé","Done")}</th></tr></thead><tbody>${rowsS}</tbody></table>`:""}
+   ${rows.length?`<table class="bil-tb"><thead><tr><th></th><th>${ALT("Séance","Session")}</th><th>${ALT("Prévu","Plan")}</th><th>${ALT("Réalisé","Done")}</th><th></th></tr></thead><tbody>${rows.join("")}</tbody></table>`:""}
+   <div class="dl-btns"><button type="button" class="ghost" id="bilCopy">${ALT("Copier le bilan","Copy report")}</button><span style="flex:1"></span><button type="button" data-dclose>${ALT("Fermer","Close")}</button></div></div>`);
+  const bc=$("bilCopy");if(bc)bc.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(txt);bc.textContent=ALT("Copié ✓","Copied ✓")}catch(e){bc.textContent=ALT("Copie refusée","Copy refused")}});
+}
 function dlgIcu(){dlgOpen(`<h3>${ALT("Connecter intervals.icu","Connect intervals.icu")}</h3>
   <p class="hint">${ALT("Une seule fois : ouvre intervals.icu/settings dans un navigateur, descends tout en bas jusqu'à « Paramètres développeur », clique sur « (view) » sous « Clé API » (ou « Produire »), copie la clé et colle-la ici. Elle reste sur cet appareil.","Once only: open intervals.icu/settings in a browser, scroll to the very bottom to “Developer Settings”, click “(view)” (or “Generate”) under API Key, copy the key and paste it here. It stays on this device.")}</p>
   <label class="dl-row">${ALT("Clé API","API key")}<input id="icuIn" type="password" autocomplete="off" spellcheck="false" value="${esc(icuKey())}" placeholder="${ALT("colle ta clé ici","paste your key here")}"></label>
